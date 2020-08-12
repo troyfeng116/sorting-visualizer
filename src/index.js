@@ -29,7 +29,7 @@ barSlider.onchange = function() {
 		bar.innerHTML = i;
 		bar.style.height = (i*100/N) + "%";
 		bar.style.width = (100/N) + "%";
-		bar.style.left = ((i-1)*110/N)+"%";
+		bar.style.left = ((i-1)*100/N)+"%";
 		barContainer.appendChild(bar);
 	}
 }
