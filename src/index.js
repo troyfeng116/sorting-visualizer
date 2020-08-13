@@ -5,33 +5,41 @@ import './index.css';
 class Bar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state={
-			highlight:"none"
-		};
 	}
+
 	render() {
 		return (
-			<div>Bruh</div>
+			<div>DIV {this.props.val}</div>
 		);
 	}
 }
 
-var N;
-const barContainer = document.getElementById("barContainer");
+class BarContainer extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state= {
+			numBars: 10,
+			barArray: [1,2,3,4,5,6,7,8,9,10],
+		};
+	}
+	renderBar(i) {
+		return (
+			<Bar val={i} />
+		);
+	}
 
-const barSlider = document.getElementById("barSlider");
-barSlider.onchange = function() {
-	while (barContainer.firstChild) barContainer.removeChild(barContainer.firstChild);
-	N = barSlider.value;
-	document.getElementById("numBarsDisplay").innerHTML = N;
-	for (let i = 1; i <= N; i++) {
-		var bar = document.createElement("div");
-		bar.innerHTML = i;
-		bar.style.height = (i*100/N) + "%";
-		bar.style.width = (100/N) + "%";
-		bar.style.left = ((i-1)*100/N)+"%";
-		barContainer.appendChild(bar);
+	render() {
+		const bars = this.state.barArray;
+		const moves = bars.map((index) => {
+      		return this.renderBar(index);
+    	});
+
+		return (
+			<div id="barContainer">
+				{moves}
+			</div>
+		);
 	}
 }
 
-//ReactDOM.render(<Bar val="1"  />, document.getElementById("barContainer"));
+ReactDOM.render(<BarContainer />, document.getElementById("root"));
