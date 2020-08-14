@@ -44,7 +44,7 @@ class MenuBarContainer extends React.Component {
 		super(props);
 		this.state = {
 			numBars: 10,
-			barArray: [5,2,3,1,4,7,9,10,8,6],
+			barArray: this.makeArray(10),
 		}
 	}
 	handleChange() {
@@ -67,7 +67,16 @@ class MenuBarContainer extends React.Component {
 		arr[j] = temp;
 		this.setState({
 			barArray: arr,
-		})
+		});
+	}
+	shuffle() {
+		this.myShuffleLoop(this.state.numBars-1);
+	}
+	myShuffleLoop(i) {
+		if (i < 1) return;
+		var j = Math.floor(Math.random() * (i+1));
+		this.swap(i,j);
+		setTimeout(()=>this.myShuffleLoop(i-1),100);
 	}
 	render() {
 		const menuBar = (
@@ -77,7 +86,7 @@ class MenuBarContainer extends React.Component {
 				<li>Insertion Sort</li>
 				<li>Merge Sort</li>
 				<li>Quick Sort</li>
-				<button onClick={() => setTimeout(()=> this.swap(3,5), 1000)}>Swap</button>
+				<button onClick={() => this.shuffle()}>Shuffle</button>
 				<label for="slider" id="sliderValue">10</label>
 				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()} />
 			</ul>
