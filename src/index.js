@@ -6,10 +6,9 @@ class Bar extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-
 	render() {
 		return (
-			<div style={this.props.style}>DIV {this.props.val}</div>
+			<div style={this.props.style}>{this.props.val}</div>
 		);
 	}
 }
@@ -20,7 +19,6 @@ class BarContainer extends React.Component {
 			<Bar val={val} style={style} />
 		);
 	}
-
 	render() {
 		const bars = this.props.barArray;
 		const n = this.props.numBars;
@@ -46,7 +44,7 @@ class MenuBarContainer extends React.Component {
 		super(props);
 		this.state = {
 			numBars: 10,
-			barArray: [1,2,3,4,5,6,7,8,9,10],
+			barArray: [5,2,3,1,4,7,9,10,8,6],
 		}
 	}
 	handleChange() {
@@ -62,8 +60,16 @@ class MenuBarContainer extends React.Component {
 		for (let i = 1; i <= n; i++) ans.push(i);
 		return ans;
 	}
+	swap(i,j) {
+		var arr = this.state.barArray.slice();
+		var temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+		this.setState({
+			barArray: arr,
+		})
+	}
 	render() {
-		const test = <div>{this.state.numBars}</div>;
 		const menuBar = (
 			<ul id="menuBar">
 				<li>Bubble Sort</li>
@@ -71,8 +77,9 @@ class MenuBarContainer extends React.Component {
 				<li>Insertion Sort</li>
 				<li>Merge Sort</li>
 				<li>Quick Sort</li>
+				<button onClick={() => setTimeout(()=> this.swap(3,5), 1000)}>Swap</button>
 				<label for="slider" id="sliderValue">10</label>
-				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()}></input>
+				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()} />
 			</ul>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
@@ -80,10 +87,11 @@ class MenuBarContainer extends React.Component {
 			<div id="menuBarContainer">
 				{menuBar}
 				{barContainer}
-				{test}
 			</div>
 		);
 	}
 }
 
 ReactDOM.render(<MenuBarContainer />, document.getElementById("root"));
+
+//
