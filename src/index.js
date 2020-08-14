@@ -15,13 +15,6 @@ class Bar extends React.Component {
 }
 
 class BarContainer extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state= {
-			numBars: 10,
-			barArray: [1,2,3,4,5,6,7,9,10,8],
-		};
-	}
 	renderBar(val,style) {
 		return (
 			<Bar val={val} style={style} />
@@ -29,8 +22,8 @@ class BarContainer extends React.Component {
 	}
 
 	render() {
-		const bars = this.state.barArray;
-		const n = bars.length;
+		const bars = this.props.barArray;
+		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
 			const barStyle = {
 				width:100/n+"%",
@@ -49,10 +42,28 @@ class BarContainer extends React.Component {
 }
 
 class MenuBarContainer extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			numBars: 10,
+			barArray: [1,2,3,4,5,6,7,8,9,10],
+		}
+	}
 	handleChange() {
-		document.getElementById("sliderValue").innerHTML = document.getElementById("slider").value;
+		var n = document.getElementById("slider").value;
+		document.getElementById("sliderValue").innerHTML = n;
+		this.setState({
+			numBars: n,
+			barArray: this.makeArray(n),
+		});
+	}
+	makeArray(n) {
+		var ans = [];
+		for (let i = 1; i <= n; i++) ans.push(i);
+		return ans;
 	}
 	render() {
+		const test = <div>{this.state.numBars}</div>;
 		const menuBar = (
 			<ul id="menuBar">
 				<li>Bubble Sort</li>
@@ -64,23 +75,15 @@ class MenuBarContainer extends React.Component {
 				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()}></input>
 			</ul>
 		);
+		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
 		return (
 			<div id="menuBarContainer">
 				{menuBar}
+				{barContainer}
+				{test}
 			</div>
 		);
 	}
 }
 
-class Package extends React.Component {
-	render() {
-		return (
-			<div>
-				<MenuBarContainer />
-				<BarContainer />
-			</div>
-		);
-	}
-}
-
-ReactDOM.render(<Package />, document.getElementById("root"));
+ReactDOM.render(<MenuBarContainer />, document.getElementById("root"));
