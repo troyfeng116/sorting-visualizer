@@ -48,4 +48,39 @@ class BarContainer extends React.Component {
 	}
 }
 
-ReactDOM.render(<BarContainer />, document.getElementById("root"));
+class MenuBarContainer extends React.Component {
+	handleChange() {
+		document.getElementById("sliderValue").innerHTML = document.getElementById("slider").value;
+	}
+	render() {
+		const menuBar = (
+			<ul id="menuBar">
+				<li>Bubble Sort</li>
+				<li>Selection Sort</li>
+				<li>Insertion Sort</li>
+				<li>Merge Sort</li>
+				<li>Quick Sort</li>
+				<label for="slider" id="sliderValue">10</label>
+				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()}></input>
+			</ul>
+		);
+		return (
+			<div id="menuBarContainer">
+				{menuBar}
+			</div>
+		);
+	}
+}
+
+class Package extends React.Component {
+	render() {
+		return (
+			<div>
+				<MenuBarContainer />
+				<BarContainer />
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(<Package />, document.getElementById("root"));
