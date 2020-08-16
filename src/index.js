@@ -44,7 +44,7 @@ class MenuBarContainer extends React.Component {
 		super(props);
 		this.state = {
 			numBars: 10,
-			barArray: this.makeArray(10),
+			barArray: makeArray(10),
 		}
 	}
 	handleChange() {
@@ -52,13 +52,8 @@ class MenuBarContainer extends React.Component {
 		document.getElementById("sliderValue").innerHTML = n;
 		this.setState({
 			numBars: n,
-			barArray: this.makeArray(n),
+			barArray: makeArray(n),
 		});
-	}
-	makeArray(n) {
-		var ans = [];
-		for (let i = 1; i <= n; i++) ans.push(i);
-		return ans;
 	}
 	swap(i,j) {
 		var arr = this.state.barArray.slice();
@@ -78,15 +73,39 @@ class MenuBarContainer extends React.Component {
 		this.swap(i,j);
 		setTimeout(()=>this.myShuffleLoop(i-1),100);
 	}
+	bubbleSort() {
+		var arr = this.state.barArray.slice();
+		var sequence = [];
+		for (let end = arr.length-1; end > 0; end--) {
+			for (let i = 0; i < end; i++) {
+				if (arr[i] > arr[i+1]) {
+					var temp = arr[i];
+					arr[i] = arr[i+1];
+					arr[i+1] = temp;
+					sequence.push([i,i+1]);
+				}
+			}
+		}
+		this.handleSequence(sequence);
+	}
+	handleSequence(seq) {
+		var numMoves = seq.length;
+		this.handleSequenceLoop(0,numMoves,seq);
+	}
+	handleSequenceLoop(cur,upTo,seq) {
+		if (cur >= upTo) return;
+		this.swap(seq[cur][0], seq[cur][1]);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), 100);
+	}
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
-				<li>Bubble Sort</li>
+				<li><button onClick={()=>this.bubbleSort()}>Bubble Sort</button></li>
 				<li>Selection Sort</li>
 				<li>Insertion Sort</li>
 				<li>Merge Sort</li>
 				<li>Quick Sort</li>
-				<button onClick={() => this.shuffle()}>Shuffle</button>
+				<li><button onClick={() => this.shuffle()}>Shuffle</button></li>
 				<label for="slider" id="sliderValue">10</label>
 				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()} />
 			</ul>
@@ -96,11 +115,17 @@ class MenuBarContainer extends React.Component {
 			<div id="menuBarContainer">
 				{menuBar}
 				{barContainer}
+				<div id="test">TEST</div>
 			</div>
 		);
 	}
 }
 
-ReactDOM.render(<MenuBarContainer />, document.getElementById("root"));
+function makeArray(n) {
+	var ans = [];
+	for (let i = 1; i <= n; i++) ans.push(i);
+	return ans;
+}
 
-//
+// ------------
+ReactDOM.render(<MenuBarContainer />, document.getElementById("root"));
