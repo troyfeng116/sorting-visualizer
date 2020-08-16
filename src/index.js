@@ -65,13 +65,13 @@ class MenuBarContainer extends React.Component {
 		});
 	}
 	shuffle() {
-		this.myShuffleLoop(this.state.numBars-1);
+		this.shuffleLoop(this.state.numBars-1);
 	}
-	myShuffleLoop(i) {
+	shuffleLoop(i) {
 		if (i < 1) return;
 		var j = Math.floor(Math.random() * (i+1));
 		this.swap(i,j);
-		setTimeout(()=>this.myShuffleLoop(i-1),100);
+		setTimeout(()=>this.shuffleLoop(i-1),100);
 	}
 	bubbleSort() {
 		var arr = this.state.barArray.slice();
@@ -84,6 +84,21 @@ class MenuBarContainer extends React.Component {
 					arr[i+1] = temp;
 					sequence.push([i,i+1]);
 				}
+			}
+		}
+		this.handleSequence(sequence);
+	}
+	insertionSort() {
+		var arr = this.state.barArray.slice();
+		var sequence = [];
+		for (let i = 0; i < arr.length; i++) {
+			var toMove = arr[i];
+			let j = i-1;
+			while (j >= 0 && arr[j] > toMove) {
+				arr[j+1] = arr[j];
+				arr[j] = toMove;
+				sequence.push([j,j+1]);
+				j--;
 			}
 		}
 		this.handleSequence(sequence);
@@ -102,7 +117,7 @@ class MenuBarContainer extends React.Component {
 			<ul id="menuBar">
 				<li><button onClick={()=>this.bubbleSort()}>Bubble Sort</button></li>
 				<li>Selection Sort</li>
-				<li>Insertion Sort</li>
+				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
 				<li>Merge Sort</li>
 				<li>Quick Sort</li>
 				<li><button onClick={() => this.shuffle()}>Shuffle</button></li>
