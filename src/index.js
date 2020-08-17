@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const NORMAL = 0;
+const ACTIVE = 1;
+const COMPARE = 2;
+
 class Bar extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<div style={this.props.style}>{this.props.val}</div>
@@ -43,8 +44,8 @@ class MenuBarContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			numBars: 10,
-			barArray: makeArray(10),
+			numBars: 25,
+			barArray: makeArray(25),
 		}
 	}
 	handleChange() {
@@ -71,7 +72,7 @@ class MenuBarContainer extends React.Component {
 		if (i < 1) return;
 		var j = Math.floor(Math.random() * (i+1));
 		this.swap(i,j);
-		setTimeout(()=>this.shuffleLoop(i-1),100);
+		setTimeout(()=>this.shuffleLoop(i-1),50);
 	}
 	bubbleSort() {
 		var arr = this.state.barArray.slice();
@@ -103,6 +104,31 @@ class MenuBarContainer extends React.Component {
 		}
 		this.handleSequence(sequence);
 	}
+	quickSort() {
+		var arr = this.state.barArray.slice();
+		var sequence = [];
+		this.qSortAux(arr, 0, arr.length-1, sequence);
+		this.handleSequence(sequence);
+	}
+	qSortAux(arr, l, r, sequence) {
+		if (l >= r) return;
+		var splitter = arr[r];
+		var m = l;
+		for (let i = l; i < r; i++) {
+			if (arr[i] < splitter) {
+				var temp = arr[i];
+				arr[i] = arr[m];
+				arr[m] = temp;
+				if (i !== m) sequence.push([i,m]);
+				m++;
+			}
+		}
+		arr[r] = arr[m];
+		arr[m] = splitter;
+		if (m !== r) sequence.push([m,r]);
+		this.qSortAux(arr,l,m-1,sequence);
+		this.qSortAux(arr,m+1,r,sequence);
+	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
 		this.handleSequenceLoop(0,numMoves,seq);
@@ -110,7 +136,7 @@ class MenuBarContainer extends React.Component {
 	handleSequenceLoop(cur,upTo,seq) {
 		if (cur >= upTo) return;
 		this.swap(seq[cur][0], seq[cur][1]);
-		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), 100);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), 70);
 	}
 	render() {
 		const menuBar = (
@@ -119,10 +145,10 @@ class MenuBarContainer extends React.Component {
 				<li>Selection Sort</li>
 				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
 				<li>Merge Sort</li>
-				<li>Quick Sort</li>
+				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
 				<li><button onClick={() => this.shuffle()}>Shuffle</button></li>
-				<label for="slider" id="sliderValue">10</label>
-				<input type="range" min="5" max="25" defaultValue="10" name="slider" id="slider" onInput={() => this.handleChange()} />
+				<label for="slider" id="sliderValue">25</label>
+				<input type="range" min="5" max="50" defaultValue="25" name="slider" id="slider" onInput={() => this.handleChange()} />
 			</ul>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
