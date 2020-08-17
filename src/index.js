@@ -5,11 +5,14 @@ import './index.css';
 const NORMAL = 0;
 const ACTIVE = 1;
 const COMPARE = 2;
+const SORTED = 3;
+
+const speed = 100;
 
 class Bar extends React.Component {
 	render() {
 		return (
-			<div style={this.props.style}>{this.props.val}</div>
+			<div style={this.props.style}>{this.props.val[0]}</div>
 		);
 	}
 }
@@ -25,9 +28,10 @@ class BarContainer extends React.Component {
 		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
 			const barStyle = {
-				width:100/n+"%",
-				height:val/n*100+"%",
+				width:90/n+"%",
+				height:val[0]/n*100+"%",
 				left:index*100/n+"%",
+				backgroundColor:getColor(val[1])
 			};
       		return this.renderBar(val,barStyle);
     	});
@@ -56,13 +60,34 @@ class MenuBarContainer extends React.Component {
 			barArray: makeArray(n),
 		});
 	}
+	reset(i,j) {
+		var arr = this.state.barArray.slice();
+		arr[i][1] = NORMAL;
+		arr[j][1] = NORMAL;
+		this.setState({
+			barArray: arr,
+		});
+	}
 	swap(i,j) {
 		var arr = this.state.barArray.slice();
 		var temp = arr[i];
 		arr[i] = arr[j];
 		arr[j] = temp;
+		arr[i][1] = COMPARE;
+		arr[j][1] = COMPARE;
 		this.setState({
 			barArray: arr,
+		});
+		setTimeout(()=>this.reset(i,j),speed);
+	}
+	setActive(f,t) {
+		var arr = this.state.barArray.slice();
+		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
+		for (let k = f; k <= t; k++) {
+			arr[k][1] = ACTIVE;
+		}
+		this.setState({
+			barArray:arr
 		});
 	}
 	shuffle() {
@@ -72,14 +97,14 @@ class MenuBarContainer extends React.Component {
 		if (i < 1) return;
 		var j = Math.floor(Math.random() * (i+1));
 		this.swap(i,j);
-		setTimeout(()=>this.shuffleLoop(i-1),50);
+		setTimeout(()=>this.shuffleLoop(i-1),speed);
 	}
 	bubbleSort() {
 		var arr = this.state.barArray.slice();
 		var sequence = [];
 		for (let end = arr.length-1; end > 0; end--) {
 			for (let i = 0; i < end; i++) {
-				if (arr[i] > arr[i+1]) {
+				if (arr[i][0] > arr[i+1][0]) {
 					var temp = arr[i];
 					arr[i] = arr[i+1];
 					arr[i+1] = temp;
@@ -95,7 +120,7 @@ class MenuBarContainer extends React.Component {
 		for (let i = 0; i < arr.length; i++) {
 			var toMove = arr[i];
 			let j = i-1;
-			while (j >= 0 && arr[j] > toMove) {
+			while (j >= 0 && arr[j][0] > toMove[0]) {
 				arr[j+1] = arr[j];
 				arr[j] = toMove;
 				sequence.push([j,j+1]);
@@ -115,17 +140,17 @@ class MenuBarContainer extends React.Component {
 		var splitter = arr[r];
 		var m = l;
 		for (let i = l; i < r; i++) {
-			if (arr[i] < splitter) {
+			if (arr[i][0] < splitter[0]) {
 				var temp = arr[i];
 				arr[i] = arr[m];
 				arr[m] = temp;
-				if (i !== m) sequence.push([i,m]);
+				sequence.push([i,m,l,r]);
 				m++;
 			}
 		}
 		arr[r] = arr[m];
 		arr[m] = splitter;
-		if (m !== r) sequence.push([m,r]);
+		sequence.push([m,r,l,r]);
 		this.qSortAux(arr,l,m-1,sequence);
 		this.qSortAux(arr,m+1,r,sequence);
 	}
@@ -135,8 +160,11 @@ class MenuBarContainer extends React.Component {
 	}
 	handleSequenceLoop(cur,upTo,seq) {
 		if (cur >= upTo) return;
+		if (seq[cur].length > 2) {
+			this.setActive(seq[cur][2],seq[cur][3]);
+		}
 		this.swap(seq[cur][0], seq[cur][1]);
-		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), 70);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
 	}
 	render() {
 		const menuBar = (
@@ -164,8 +192,14 @@ class MenuBarContainer extends React.Component {
 
 function makeArray(n) {
 	var ans = [];
-	for (let i = 1; i <= n; i++) ans.push(i);
+	for (let i = 1; i <= n; i++) ans.push([i,NORMAL]);
 	return ans;
+}
+function getColor(state) {
+	return state==NORMAL?
+		"darkblue" : state==ACTIVE?
+			"purple" : state==COMPARE?
+				"red" : "green";
 }
 
 // ------------

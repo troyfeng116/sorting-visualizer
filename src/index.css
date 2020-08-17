@@ -13,8 +13,9 @@ h1 {
 #barContainer div {
 	display:inline-block;
 	text-align:center;
-	outline:1px solid black;
-	outline-offset: -2px;
+	border:1px solid white;
 	position:absolute;
 	bottom:0;
+	background-color:darkblue;
+	color:white;
 }
