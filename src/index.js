@@ -62,6 +62,10 @@ class MenuBarContainer extends React.Component {
 			barArray: makeArray(n),
 		});
 	}
+	handleStop() {
+		stop = true;
+		this.setColor(NORMAL);
+	}
 	reset(i,j) {
 		var arr = this.state.barArray.slice();
 		arr[i][1] = NORMAL;
@@ -91,13 +95,13 @@ class MenuBarContainer extends React.Component {
 			barArray: arr,
 		});
 	}
-	setActive(f,t) {
+	setActive(f,t,quickSort) {
 		var arr = this.state.barArray.slice();
 		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
-		for (let k = f; k < t; k++) {
+		for (let k = f; k <= t; k++) {
 			arr[k][1] = ACTIVE;
 		}
-		arr[t][1] = PIVOT;
+		if (quickSort) arr[t][1] = PIVOT;
 		this.setState({
 			barArray:arr
 		});
@@ -174,9 +178,6 @@ class MenuBarContainer extends React.Component {
 		var sequence = [];
 		this.mSortAux(arr,0,arr.length-1,sequence);
 		this.handleSequence(sequence);
-		this.setState({
-			barArray: arr
-		});
 	}
 	mSortAux(arr,l,r,sequence) {
 		if (l >= r) return;
@@ -190,7 +191,10 @@ class MenuBarContainer extends React.Component {
 		var lIndex = l;
 		var rIndex = m+1;
 		while (lIndex <= m && rIndex <= r) {
-			if (arr[lIndex] < arr[rIndex]) lIndex++;
+			if (arr[lIndex][0] <= arr[rIndex][0]) {
+				lIndex++;
+				sequence.push([arr.slice(),l,r,lIndex,rIndex]);
+			}
 			else {
 				var temp = arr[rIndex];
 				var i = rIndex;
@@ -199,6 +203,7 @@ class MenuBarContainer extends React.Component {
 					i--;
 				}
 				arr[lIndex] = temp;
+				sequence.push([arr.slice(),l,r,lIndex,rIndex]);
 				lIndex++;
 				rIndex++;
 				m++;
@@ -212,10 +217,19 @@ class MenuBarContainer extends React.Component {
 	}
 	handleSequenceLoop(cur,upTo,seq) {
 		if (cur >= upTo || stop) return;
-		if (seq[cur].length == 4) {
-			this.setActive(seq[cur][2],seq[cur][3]);
+		if (seq[cur].length == 2 || seq[cur].length == 4) {
+			if (seq[cur].length == 4) this.setActive(seq[cur][2],seq[cur][3], true);
+			this.swap(seq[cur][0], seq[cur][1]);
 		}
-		this.swap(seq[cur][0], seq[cur][1]);
+		else if (seq[cur].length == 5) {
+			this.setActive(seq[cur][1], seq[cur][2], false);
+			var newArr = seq[cur][0];
+			newArr[seq[cur][3]][1] = COMPARE;
+			newArr[seq[cur][4]][1] = COMPARE;
+			this.setState({
+				barArray: newArr,
+			});
+		}
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
 		if (sorted(this.state.barArray)) {
 			setTimeout(()=>this.setColor(SORTED),speed);
@@ -232,7 +246,7 @@ class MenuBarContainer extends React.Component {
 				<li><button onClick={()=>this.shuffle()}>Shuffle</button></li>
 				<label for="slider" id="sliderValue">25</label>
 				<input type="range" min="5" max="50" defaultValue="25" name="slider" id="slider" onInput={() => this.handleChange()} />
-				<li><button onClick={()=>{stop = true;}}>Stop</button></li>
+				<li><button onClick={()=>this.handleStop()}>Stop</button></li>
 			</ul>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
