@@ -54,13 +54,17 @@ class MenuBarContainer extends React.Component {
 			barArray: makeArray(25),
 		}
 	}
-	handleChange() {
-		var n = document.getElementById("slider").value;
-		document.getElementById("sliderValue").innerHTML = n;
+	handleNumBarsChange() {
+		var n = document.getElementById("barSlider").value;
+		document.getElementById("barSliderDisplay").innerHTML = "# BARS: "+n;
 		this.setState({
 			numBars: n,
 			barArray: makeArray(n),
 		});
+	}
+	handleSpeedChange() {
+		speed = document.getElementById("speedSlider").value;
+		document.getElementById("speedSliderDisplay").innerHTML = "SPEED: "+(speed/1000)+"s";
 	}
 	handleStop() {
 		stop = true;
@@ -259,15 +263,29 @@ class MenuBarContainer extends React.Component {
 				<li><button onClick={()=>this.mergeSort()}>Merge Sort</button></li>
 				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
 				<li><button onClick={()=>this.shuffle()}>Shuffle</button></li>
-				<label for="slider" id="sliderValue">25</label>
-				<input type="range" min="5" max="50" defaultValue="25" name="slider" id="slider" onInput={() => this.handleChange()} />
 				<li><button onClick={()=>this.handleStop()}>Stop</button></li>
 			</ul>
 		);
+		const sliderContainer = (
+			<div id="sliderContainer">
+				<input 
+					type="range" 
+					min="5" max="50" defaultValue="25" 
+					name="barSlider" id="barSlider" 
+					onInput={() => this.handleNumBarsChange()} /><br/>
+				<label for="barSlider" id="barSliderDisplay"># BARS: 25</label><br/><br/>
+				<input 
+					type="range" 
+					min="10" max="700" defaultValue="100"  step="10"
+					name="speedSlider" id="speedSlider" onInput={() => this.handleSpeedChange()} /><br/>
+				<label for="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
+			</div>
+		)
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
 		return (
 			<div id="menuBarContainer">
 				{menuBar}
+				{sliderContainer}
 				{barContainer}
 				<div id="test">TEST</div>
 			</div>
