@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "//troyfeng116.github.io/sorting-visualizer/static/css/main.b05e1d87.chunk.css",
+    "main.js": "//troyfeng116.github.io/sorting-visualizer/static/js/main.2f123a82.chunk.js",
+    "main.js.map": "//troyfeng116.github.io/sorting-visualizer/static/js/main.2f123a82.chunk.js.map",
+    "runtime-main.js": "//troyfeng116.github.io/sorting-visualizer/static/js/runtime-main.63412909.js",
+    "runtime-main.js.map": "//troyfeng116.github.io/sorting-visualizer/static/js/runtime-main.63412909.js.map",
+    "static/js/2.5d43ed7a.chunk.js": "//troyfeng116.github.io/sorting-visualizer/static/js/2.5d43ed7a.chunk.js",
+    "static/js/2.5d43ed7a.chunk.js.map": "//troyfeng116.github.io/sorting-visualizer/static/js/2.5d43ed7a.chunk.js.map",
+    "index.html": "//troyfeng116.github.io/sorting-visualizer/index.html",
+    "precache-manifest.e44567bc3bfc2f70f6a03982c8e09d78.js": "//troyfeng116.github.io/sorting-visualizer/precache-manifest.e44567bc3bfc2f70f6a03982c8e09d78.js",
+    "service-worker.js": "//troyfeng116.github.io/sorting-visualizer/service-worker.js",
+    "static/css/main.b05e1d87.chunk.css.map": "//troyfeng116.github.io/sorting-visualizer/static/css/main.b05e1d87.chunk.css.map",
+    "static/js/2.5d43ed7a.chunk.js.LICENSE.txt": "//troyfeng116.github.io/sorting-visualizer/static/js/2.5d43ed7a.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.63412909.js",
+    "static/js/2.5d43ed7a.chunk.js",
+    "static/css/main.b05e1d87.chunk.css",
+    "static/js/main.2f123a82.chunk.js"
+  ]
+}
