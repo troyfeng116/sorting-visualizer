@@ -5,9 +5,10 @@ import './index.css';
 const NORMAL = 0;
 const ACTIVE = 1;
 const COMPARE = 2;
-const SORTED = 3;
+const PIVOT = 3;
 
-const speed = 100;
+var speed = 100;
+var stop = true;
 
 class Bar extends React.Component {
 	render() {
@@ -80,21 +81,33 @@ class MenuBarContainer extends React.Component {
 		});
 		setTimeout(()=>this.reset(i,j),speed);
 	}
+	setColor(color) {
+		var arr = this.state.barArray.slice();
+		for (let i = 0; i < arr.length; i++) {
+			arr[i][1] = color;
+		}
+		this.setState({
+			barArray: arr,
+		});
+	}
 	setActive(f,t) {
 		var arr = this.state.barArray.slice();
 		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
-		for (let k = f; k <= t; k++) {
+		for (let k = f; k < t; k++) {
 			arr[k][1] = ACTIVE;
 		}
+		arr[t][1] = PIVOT;
 		this.setState({
 			barArray:arr
 		});
+		//setTimeout(()=>this.setColor(NORMAL),speed*1.005);
 	}
 	shuffle() {
+		stop = false;
 		this.shuffleLoop(this.state.numBars-1);
 	}
 	shuffleLoop(i) {
-		if (i < 1) return;
+		if (i < 1 || stop) return;
 		var j = Math.floor(Math.random() * (i+1));
 		this.swap(i,j);
 		setTimeout(()=>this.shuffleLoop(i-1),speed);
@@ -141,25 +154,26 @@ class MenuBarContainer extends React.Component {
 		var m = l;
 		for (let i = l; i < r; i++) {
 			if (arr[i][0] < splitter[0]) {
-				var temp = arr[i];
+				let temp = arr[i];
 				arr[i] = arr[m];
 				arr[m] = temp;
-				sequence.push([i,m,l,r]);
+				if (i != m) sequence.push([i,m,l,r]);
 				m++;
 			}
 		}
 		arr[r] = arr[m];
 		arr[m] = splitter;
-		sequence.push([m,r,l,r]);
+		if (m != r) sequence.push([m,r,l,r]);
 		this.qSortAux(arr,l,m-1,sequence);
 		this.qSortAux(arr,m+1,r,sequence);
 	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
+		stop = false;
 		this.handleSequenceLoop(0,numMoves,seq);
 	}
 	handleSequenceLoop(cur,upTo,seq) {
-		if (cur >= upTo) return;
+		if (cur >= upTo || stop) return;
 		if (seq[cur].length > 2) {
 			this.setActive(seq[cur][2],seq[cur][3]);
 		}
@@ -174,9 +188,10 @@ class MenuBarContainer extends React.Component {
 				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
 				<li>Merge Sort</li>
 				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
-				<li><button onClick={() => this.shuffle()}>Shuffle</button></li>
+				<li><button onClick={()=>this.shuffle()}>Shuffle</button></li>
 				<label for="slider" id="sliderValue">25</label>
 				<input type="range" min="5" max="50" defaultValue="25" name="slider" id="slider" onInput={() => this.handleChange()} />
+				<li><button onClick={()=>{stop = true;}}>Stop</button></li>
 			</ul>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
@@ -200,6 +215,12 @@ function getColor(state) {
 		"darkblue" : state==ACTIVE?
 			"purple" : state==COMPARE?
 				"red" : "green";
+}
+function indexOf(arr, element) {
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i][0] == element) return i;
+	}
+	return -1;
 }
 
 // ------------
