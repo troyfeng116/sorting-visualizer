@@ -105,7 +105,6 @@ class MenuBarContainer extends React.Component {
 		this.setState({
 			barArray:arr
 		});
-		//setTimeout(()=>this.setColor(NORMAL),speed*1.005);
 	}
 	shuffle() {
 		stop = false;
