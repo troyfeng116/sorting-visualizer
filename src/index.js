@@ -163,13 +163,13 @@ class MenuBarContainer extends React.Component {
 				let temp = arr[i];
 				arr[i] = arr[m];
 				arr[m] = temp;
-				if (i != m) sequence.push([i,m,l,r]);
+				if (i !== m) sequence.push([i,m,l,r]);
 				m++;
 			}
 		}
 		arr[r] = arr[m];
 		arr[m] = splitter;
-		if (m != r) sequence.push([m,r,l,r]);
+		if (m !== r) sequence.push([m,r,l,r]);
 		this.qSortAux(arr,l,m-1,sequence);
 		this.qSortAux(arr,m+1,r,sequence);
 	}
@@ -198,7 +198,7 @@ class MenuBarContainer extends React.Component {
 			else {
 				var temp = arr[rIndex];
 				var i = rIndex;
-				while (i != lIndex) {
+				while (i !== lIndex) {
 					arr[i] = arr[i-1];
 					i--;
 				}
@@ -217,11 +217,11 @@ class MenuBarContainer extends React.Component {
 	}
 	handleSequenceLoop(cur,upTo,seq) {
 		if (cur >= upTo || stop) return;
-		if (seq[cur].length == 2 || seq[cur].length == 4) {
-			if (seq[cur].length == 4) this.setActive(seq[cur][2],seq[cur][3], true);
+		if (seq[cur].length === 2 || seq[cur].length === 4) {
+			if (seq[cur].length === 4) this.setActive(seq[cur][2],seq[cur][3], true);
 			this.swap(seq[cur][0], seq[cur][1]);
 		}
-		else if (seq[cur].length == 5) {
+		else if (seq[cur].length === 5) {
 			this.setActive(seq[cur][1], seq[cur][2], false);
 			var newArr = seq[cur][0];
 			newArr[seq[cur][3]][1] = COMPARE;
@@ -266,10 +266,10 @@ function makeArray(n) {
 	return ans;
 }
 function getColor(state) {
-	return state==NORMAL?
-		"darkblue" : state==ACTIVE?
-			"purple" : state==COMPARE?
-				"red" : state==PIVOT?
+	return state===NORMAL?
+		"darkblue" : state===ACTIVE?
+			"purple" : state===COMPARE?
+				"red" : state===PIVOT?
 					"yellow" : "green";
 }
 function sorted(arr) {
