@@ -169,6 +169,50 @@ class MenuBarContainer extends React.Component {
 		this.qSortAux(arr,l,m-1,sequence);
 		this.qSortAux(arr,m+1,r,sequence);
 	}
+	mergeSort() {
+		var arr = this.state.barArray.slice();
+		var sequence = [];
+		this.mSortAux(arr,0,arr.length,sequence);
+		this.handleSequence(sequence);
+	}
+	mSortAux(arr,l,r,sequence) {
+		if (l >= r) return;
+		var m = Math.floor((l+r)/2);
+		this.mSortAux(arr,l,m,sequence);
+		this.mSortAux(arr,m+1,r,sequence);
+		this.merge(arr,l,r,sequence);
+	}
+	merge(arr,l,r,sequence) {
+		var m = Math.floor((l+r)/2);
+		var lArr = arr.slice(l,m+1);
+		var rArr = arr.slice(m+1,r);
+		var lIndex = 0, rIndex = 0, pIndex = l;
+		while (lIndex < lArr.length && rIndex < rArr.length) {
+			if (lArr[lIndex] < rArr[rIndex]) {
+				sequence.push([pIndex,indexOf(arr,lArr[lIndex]),l,r-1]);
+				arr[pIndex] = lArr[lIndex];
+				lIndex++;
+			}
+			else {
+				sequence.push([pIndex,indexOf(arr,rArr[rIndex]),l,r-1]);
+				arr[pIndex] = rArr[rIndex];
+				rIndex++;
+			}
+			pIndex++;
+		}
+		while (lIndex < lArr.length) {
+			arr[pIndex] = lArr[lIndex];
+			sequence.push([pIndex,indexOf(arr,lArr[lIndex]),l,r-1]);
+			lIndex++;
+			pIndex++;
+		}
+		while (rIndex < rArr.length) {
+			arr[pIndex] = rArr[rIndex];
+			sequence.push([pIndex,indexOf(arr,rArr[rIndex]),l,r-1]);
+			rIndex++;
+			pIndex++;
+		}
+	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
 		stop = false;
@@ -176,7 +220,7 @@ class MenuBarContainer extends React.Component {
 	}
 	handleSequenceLoop(cur,upTo,seq) {
 		if (cur >= upTo || stop) return;
-		if (seq[cur].length > 2) {
+		if (seq[cur].length == 4) {
 			this.setActive(seq[cur][2],seq[cur][3]);
 		}
 		this.swap(seq[cur][0], seq[cur][1]);
@@ -191,7 +235,7 @@ class MenuBarContainer extends React.Component {
 				<li><button onClick={()=>this.bubbleSort()}>Bubble Sort</button></li>
 				<li>Selection Sort</li>
 				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
-				<li>Merge Sort</li>
+				<li><button onClick={()=>this.mergeSort()}>Merge Sort</button></li>
 				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
 				<li><button onClick={()=>this.shuffle()}>Shuffle</button></li>
 				<label for="slider" id="sliderValue">25</label>
@@ -221,6 +265,12 @@ function getColor(state) {
 			"purple" : state==COMPARE?
 				"red" : state==PIVOT?
 					"yellow" : "green";
+}
+function indexOf(arr,target) {
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i][0] == target) return i;
+	}
+	return 0;
 }
 function sorted(arr) {
 	for (let i = 0; i < arr.length-1; i++) {
