@@ -119,6 +119,10 @@ class MenuBarContainer extends React.Component {
 	}
 	bubbleSort() {
 		var arr = this.state.barArray.slice();
+		if (sorted(arr)) {
+			this.setColor(SORTED);
+			return;
+		}
 		var sequence = [];
 		for (let end = arr.length-1; end > 0; end--) {
 			for (let i = 0; i < end; i++) {
@@ -134,6 +138,10 @@ class MenuBarContainer extends React.Component {
 	}
 	insertionSort() {
 		var arr = this.state.barArray.slice();
+		if (sorted(arr)) {
+			this.setColor(SORTED);
+			return;
+		}
 		var sequence = [];
 		for (let i = 0; i < arr.length; i++) {
 			var toMove = arr[i];
@@ -149,6 +157,10 @@ class MenuBarContainer extends React.Component {
 	}
 	quickSort() {
 		var arr = this.state.barArray.slice();
+		if (sorted(arr)) {
+			this.setColor(SORTED);
+			return;
+		}
 		var sequence = [];
 		this.qSortAux(arr, 0, arr.length-1, sequence);
 		this.handleSequence(sequence);
@@ -174,6 +186,10 @@ class MenuBarContainer extends React.Component {
 	}
 	mergeSort() {
 		var arr = this.state.barArray.slice();
+		if (sorted(arr)) {
+			this.setColor(SORTED);
+			return;
+		}
 		var sequence = [];
 		this.mSortAux(arr,0,arr.length-1,sequence);
 		this.handleSequence(sequence);
@@ -266,10 +282,10 @@ function makeArray(n) {
 }
 function getColor(state) {
 	return state===NORMAL?
-		"darkblue" : state===ACTIVE?
-			"purple" : state===COMPARE?
+		"rgb(60,60,120)" : state===ACTIVE?
+			"rgb(100,100,255)" : state===COMPARE?
 				"red" : state===PIVOT?
-					"yellow" : "green";
+					"blue" : "rgb(80,210,80)";
 }
 function sorted(arr) {
 	for (let i = 0; i < arr.length-1; i++) {

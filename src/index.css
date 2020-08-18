@@ -1,7 +1,6 @@
-h1 {
-	color:blue;
+#menuBar {
+	list-style:none;
 }
-
 #barContainer {
 	width:75%;
 	height:60%;
@@ -16,6 +15,5 @@ h1 {
 	border:1px solid white;
 	position:absolute;
 	bottom:0;
-	background-color:darkblue;
 	color:white;
 }
