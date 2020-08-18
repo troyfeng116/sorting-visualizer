@@ -29,13 +29,14 @@ class BarContainer extends React.Component {
 		const bars = this.props.barArray;
 		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
+
 			const barStyle = {
-				width:90/n+"%",
+				width:85/n+"%",
 				height:val[0]/n*100+"%",
 				left:index*100/n+"%",
 				backgroundColor:getColor(val[1])
 			};
-      		return this.renderBar(val,barStyle);
+      		return n <= 40? this.renderBar(val,barStyle) : this.renderBar("",barStyle);
     	});
 
 		return (
@@ -50,8 +51,8 @@ class MenuBarContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			numBars: 25,
-			barArray: makeArray(25),
+			numBars: 30,
+			barArray: makeArray(30),
 		}
 	}
 	handleNumBarsChange() {
@@ -270,10 +271,10 @@ class MenuBarContainer extends React.Component {
 			<div id="sliderContainer">
 				<input 
 					type="range" 
-					min="5" max="50" defaultValue="25" 
+					min="5" max="75" defaultValue="30" 
 					name="barSlider" id="barSlider" 
 					onInput={() => this.handleNumBarsChange()} /><br/>
-				<label for="barSlider" id="barSliderDisplay"># BARS: 25</label><br/><br/>
+				<label for="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
 				<input 
 					type="range" 
 					min="10" max="700" defaultValue="100"  step="10"
