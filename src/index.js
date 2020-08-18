@@ -172,8 +172,11 @@ class MenuBarContainer extends React.Component {
 	mergeSort() {
 		var arr = this.state.barArray.slice();
 		var sequence = [];
-		this.mSortAux(arr,0,arr.length,sequence);
+		this.mSortAux(arr,0,arr.length-1,sequence);
 		this.handleSequence(sequence);
+		this.setState({
+			barArray: arr
+		});
 	}
 	mSortAux(arr,l,r,sequence) {
 		if (l >= r) return;
@@ -184,33 +187,22 @@ class MenuBarContainer extends React.Component {
 	}
 	merge(arr,l,r,sequence) {
 		var m = Math.floor((l+r)/2);
-		var lArr = arr.slice(l,m+1);
-		var rArr = arr.slice(m+1,r);
-		var lIndex = 0, rIndex = 0, pIndex = l;
-		while (lIndex < lArr.length && rIndex < rArr.length) {
-			if (lArr[lIndex] < rArr[rIndex]) {
-				sequence.push([pIndex,indexOf(arr,lArr[lIndex]),l,r-1]);
-				arr[pIndex] = lArr[lIndex];
-				lIndex++;
-			}
+		var lIndex = l;
+		var rIndex = m+1;
+		while (lIndex <= m && rIndex <= r) {
+			if (arr[lIndex] < arr[rIndex]) lIndex++;
 			else {
-				sequence.push([pIndex,indexOf(arr,rArr[rIndex]),l,r-1]);
-				arr[pIndex] = rArr[rIndex];
+				var temp = arr[rIndex];
+				var i = rIndex;
+				while (i != lIndex) {
+					arr[i] = arr[i-1];
+					i--;
+				}
+				arr[lIndex] = temp;
+				lIndex++;
 				rIndex++;
+				m++;
 			}
-			pIndex++;
-		}
-		while (lIndex < lArr.length) {
-			arr[pIndex] = lArr[lIndex];
-			sequence.push([pIndex,indexOf(arr,lArr[lIndex]),l,r-1]);
-			lIndex++;
-			pIndex++;
-		}
-		while (rIndex < rArr.length) {
-			arr[pIndex] = rArr[rIndex];
-			sequence.push([pIndex,indexOf(arr,rArr[rIndex]),l,r-1]);
-			rIndex++;
-			pIndex++;
 		}
 	}
 	handleSequence(seq) {
@@ -265,12 +257,6 @@ function getColor(state) {
 			"purple" : state==COMPARE?
 				"red" : state==PIVOT?
 					"yellow" : "green";
-}
-function indexOf(arr,target) {
-	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][0] == target) return i;
-	}
-	return 0;
 }
 function sorted(arr) {
 	for (let i = 0; i < arr.length-1; i++) {
