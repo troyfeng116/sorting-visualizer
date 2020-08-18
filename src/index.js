@@ -14,7 +14,7 @@ var stop = true;
 class Bar extends React.Component {
 	render() {
 		return (
-			<div style={this.props.style}>{this.props.val[0]}</div>
+			<div style={this.props.style}>{this.props.val}</div>
 		);
 	}
 }
@@ -29,16 +29,14 @@ class BarContainer extends React.Component {
 		const bars = this.props.barArray;
 		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
-
 			const barStyle = {
 				width:85/n+"%",
 				height:val[0]/n*100+"%",
 				left:index*100/n+"%",
 				backgroundColor:getColor(val[1])
 			};
-      		return n <= 40? this.renderBar(val,barStyle) : this.renderBar("",barStyle);
+      		return n <= 40? this.renderBar(val[0],barStyle) : this.renderBar("",barStyle);
     	});
-
 		return (
 			<div id="barContainer">
 				{moves}
@@ -47,7 +45,7 @@ class BarContainer extends React.Component {
 	}
 }
 
-class MenuBarContainer extends React.Component {
+class BigContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -314,4 +312,4 @@ function sorted(arr) {
 }
 
 // ------------
-ReactDOM.render(<MenuBarContainer />, document.getElementById("root"));
+ReactDOM.render(<BigContainer />, document.getElementById("root"));
