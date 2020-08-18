@@ -6,6 +6,7 @@ const NORMAL = 0;
 const ACTIVE = 1;
 const COMPARE = 2;
 const PIVOT = 3;
+const SORTED = 4;
 
 var speed = 100;
 var stop = true;
@@ -104,6 +105,7 @@ class MenuBarContainer extends React.Component {
 	}
 	shuffle() {
 		stop = false;
+		this.setColor(NORMAL);
 		this.shuffleLoop(this.state.numBars-1);
 	}
 	shuffleLoop(i) {
@@ -179,6 +181,9 @@ class MenuBarContainer extends React.Component {
 		}
 		this.swap(seq[cur][0], seq[cur][1]);
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
+		if (sorted(this.state.barArray)) {
+			setTimeout(()=>this.setColor(SORTED),speed);
+		}
 	}
 	render() {
 		const menuBar = (
@@ -214,13 +219,14 @@ function getColor(state) {
 	return state==NORMAL?
 		"darkblue" : state==ACTIVE?
 			"purple" : state==COMPARE?
-				"red" : "green";
+				"red" : state==PIVOT?
+					"yellow" : "green";
 }
-function indexOf(arr, element) {
-	for (let i = 0; i < arr.length; i++) {
-		if (arr[i][0] == element) return i;
+function sorted(arr) {
+	for (let i = 0; i < arr.length-1; i++) {
+		if (arr[i][0] > arr[i+1][0]) return false;
 	}
-	return -1;
+	return true;
 }
 
 // ------------
