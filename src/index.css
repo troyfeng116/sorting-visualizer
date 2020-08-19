@@ -8,12 +8,14 @@
 }
 #menuBar li {
 	display:inline-block;
+}
+#menuBar li div {
 	border:1px solid black;
 	padding:1vw;
 	margin:1vw;
 	width:10vw;
 }
-#menuBar li:hover {
+#menuBar li div:hover {
 	background-color:rgb(60,60,120);
 	color:white;
 	cursor:pointer;
