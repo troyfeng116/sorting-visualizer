@@ -202,17 +202,17 @@ class BigContainer extends React.Component {
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
-				<li><button onClick={()=>this.bubbleSort()}>Bubble Sort</button></li>
-				<li><button onClick={()=>this.heapSort()}>Heap Sort</button></li>
-				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
-				<li><button onClick={()=>this.mergeSort()}>Merge Sort</button></li>
-				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
+				<li><div onClick={()=>this.bubbleSort()}>Bubble Sort</div></li>
+				<li><div onClick={()=>this.heapSort()}>Heap Sort</div></li>
+				<li><div onClick={()=>this.insertionSort()}>Insertion Sort</div></li>
+				<li><div onClick={()=>this.mergeSort()}>Merge Sort</div></li>
+				<li><div onClick={()=>this.quickSort()}>Quick Sort</div></li>
 			</ul>
 		);
 		const otherButtons = (
 			<div id="otherButtonsContainer">
-				<button onClick={()=>this.shuffle()}>Shuffle</button>
-				<button onClick={()=>this.handleStop()}>Stop</button>
+				<div onClick={()=>this.shuffle()}>Shuffle</div><br/>
+				<div onClick={()=>this.handleStop()}>Stop</div>
 			</div>
 		);
 		const sliderContainer = (

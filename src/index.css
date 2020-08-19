@@ -1,9 +1,33 @@
 #menuBar {
 	list-style:none;
+	margin:0;
+	padding:0;
+}
+#menuBar li {
+	display:inline-block;
+	border:1px solid black;
+	padding:10px;
+	margin:10px;
+}
+#menuBar li:hover {
+	background-color:rgb(60,60,120);
+	color:white;
+	cursor:pointer;
 }
 
 #otherButtonsContainer {
 
+}
+#otherButtonsContainer div {
+	display:inline-block;
+	padding:10px;
+	margin:10px;
+	border:solid 1px black;
+}
+#otherButtonsContainer div:hover {
+	background-color:rgb(60,60,120);
+	color:white;
+	cursor:pointer;
 }
 
 #barContainer {
