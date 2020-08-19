@@ -32,7 +32,7 @@ class BarContainer extends React.Component {
 		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
 			const barStyle = {
-				width:80/n+"%",
+				width:55/n+"%",
 				height:val[0]/n*100+"%",
 				left:index*100/n+"%",
 				backgroundColor:getColor(val[1])
@@ -115,11 +115,24 @@ class BigContainer extends React.Component {
 			barArray:arr
 		});
 	}
-	shuffle() {
+	shuffle(instant) {
 		if (this.state.active) return;
 		this.setColor(NORMAL);
+		if (instant) {
+			var arr = this.state.barArray.slice();
+			for (let i = this.state.numBars-1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i+1));
+				var temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+			this.setState({
+				barArray: arr,
+			});
+			return;
+		}
 		this.setState({
-			active: true
+			active: true,
 		});
 		setTimeout(()=>this.shuffleLoop(this.state.numBars-1), delay);
 	}
@@ -217,7 +230,8 @@ class BigContainer extends React.Component {
 		);
 		const otherButtons = (
 			<div id="otherButtonsContainer">
-				<div onClick={()=>this.shuffle()}>Shuffle</div><br/>
+				<div onClick={()=>this.shuffle(false)}>Shuffle</div><br/>
+				<div onClick={()=>this.shuffle(true)}>Instant Shuffle</div><br/>
 				<div onClick={()=>this.handleStop()}>Stop</div>
 			</div>
 		);
