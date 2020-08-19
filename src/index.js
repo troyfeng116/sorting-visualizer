@@ -115,7 +115,6 @@ class BigContainer extends React.Component {
 		});
 	}
 	shuffle() {
-		document.getElementById('test').innerHTML += this.state.active;
 		if (this.state.active) return;
 		this.setColor(NORMAL);
 		this.setState({
@@ -243,7 +242,6 @@ class BigContainer extends React.Component {
 				{otherButtons}
 				{sliderContainer}
 				{barContainer}
-				<div id="test">TEST</div>
 			</div>
 		);
 	}
