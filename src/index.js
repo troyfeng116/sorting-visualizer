@@ -62,6 +62,7 @@ class BigContainer extends React.Component {
 		this.setState({
 			numBars: n,
 			barArray: makeArray(n),
+			active: false,
 		});
 	}
 	handleSpeedChange() {
