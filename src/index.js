@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+/* -------- CONSTANTS -------- */
 const NORMAL = 0;
 const ACTIVE = 1;
 const COMPARE = 2;
 const PIVOT = 3;
 const SORTED = 4;
 
+/* -------- GLOBAL STATES -------- */
 var speed = 100;
 var active = false;
 
@@ -159,40 +161,7 @@ class BigContainer extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		var sequence = [];
-		this.mSortAux(arr,0,arr.length-1,sequence);
-		this.handleSequence(sequence);
-	}
-	mSortAux(arr,l,r,sequence) {
-		if (l >= r) return;
-		var m = Math.floor((l+r)/2);
-		this.mSortAux(arr,l,m,sequence);
-		this.mSortAux(arr,m+1,r,sequence);
-		this.merge(arr,l,r,sequence);
-	}
-	merge(arr,l,r,sequence) {
-		var m = Math.floor((l+r)/2);
-		var lIndex = l;
-		var rIndex = m+1;
-		while (lIndex <= m && rIndex <= r) {
-			if (arr[lIndex][0] <= arr[rIndex][0]) {
-				lIndex++;
-				sequence.push([arr.slice(),l,r,lIndex,rIndex]);
-			}
-			else {
-				var temp = arr[rIndex];
-				var i = rIndex;
-				while (i !== lIndex) {
-					arr[i] = arr[i-1];
-					i--;
-				}
-				arr[lIndex] = temp;
-				sequence.push([arr.slice(),l,r,lIndex,rIndex]);
-				lIndex++;
-				rIndex++;
-				m++;
-			}
-		}
+		this.handleSequence(mSort(arr));
 	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
@@ -314,6 +283,42 @@ function qSortAux(arr, l, r, sequence) {
 	if (m !== r) sequence.push([m,r,l,r]);
 	qSortAux(arr,l,m-1,sequence);
 	qSortAux(arr,m+1,r,sequence);
+}
+function mSort(arr) {
+	var sequence = [];
+	mSortAux(arr,0,arr.length-1,sequence);
+	return sequence;
+}
+function mSortAux(arr,l,r,sequence) {
+	if (l >= r) return;
+	var m = Math.floor((l+r)/2);
+	mSortAux(arr,l,m,sequence);
+	mSortAux(arr,m+1,r,sequence);
+	merge(arr,l,r,sequence);
+}
+function merge(arr,l,r,sequence) {
+	var m = Math.floor((l+r)/2);
+	var lIndex = l;
+	var rIndex = m+1;
+	while (lIndex <= m && rIndex <= r) {
+		if (arr[lIndex][0] <= arr[rIndex][0]) {
+			lIndex++;
+			sequence.push([arr.slice(),l,r,lIndex,rIndex]);
+		}
+		else {
+			var temp = arr[rIndex];
+			var i = rIndex;
+			while (i !== lIndex) {
+				arr[i] = arr[i-1];
+				i--;
+			}
+			arr[lIndex] = temp;
+			sequence.push([arr.slice(),l,r,lIndex,rIndex]);
+			lIndex++;
+			rIndex++;
+			m++;
+		}
+	}
 }
 
 /* -------- UTILITY FUNCTIONS -------- */
