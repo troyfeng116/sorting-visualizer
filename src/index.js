@@ -8,10 +8,10 @@ const ACTIVE = 1;
 const COMPARE = 2;
 const PIVOT = 3;
 const SORTED = 4;
+const delay = 100;
 
 /* -------- GLOBAL STATES -------- */
 var speed = 100;
-var active = false;
 
 class Bar extends React.Component {
 	render() {
@@ -32,7 +32,7 @@ class BarContainer extends React.Component {
 		const n = this.props.numBars;
 		const moves = bars.map((val,index) => {
 			const barStyle = {
-				width:85/n+"%",
+				width:80/n+"%",
 				height:val[0]/n*100+"%",
 				left:index*100/n+"%",
 				backgroundColor:getColor(val[1])
@@ -53,6 +53,7 @@ class BigContainer extends React.Component {
 		this.state = {
 			numBars: 30,
 			barArray: makeArray(30),
+			active: false,
 		}
 	}
 	handleNumBarsChange() {
@@ -68,7 +69,9 @@ class BigContainer extends React.Component {
 		document.getElementById("speedSliderDisplay").innerHTML = "SPEED: "+(speed/1000)+"s";
 	}
 	handleStop() {
-		active = false;
+		this.setState({
+			active: false,
+		});
 		this.setColor(NORMAL);
 	}
 	reset(i,j) {
@@ -112,15 +115,18 @@ class BigContainer extends React.Component {
 		});
 	}
 	shuffle() {
-		if (active) return;
+		document.getElementById('test').innerHTML += this.state.active;
+		if (this.state.active) return;
 		this.setColor(NORMAL);
-		active = true;
-		this.shuffleLoop(this.state.numBars-1);
+		this.setState({
+			active: true
+		});
+		setTimeout(()=>this.shuffleLoop(this.state.numBars-1), delay);
 	}
 	shuffleLoop(i) {
-		if (!active) return;
+		if (this.state.active === false) return;
 		if (i < 1) {
-			active = false;
+			this.setState({active: false});
 			return;
 		}
 		var j = Math.floor(Math.random() * (i+1));
@@ -128,7 +134,7 @@ class BigContainer extends React.Component {
 		setTimeout(()=>this.shuffleLoop(i-1),speed);
 	}
 	bubbleSort() {
-		if (active) return;
+		if (this.state.active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -137,7 +143,7 @@ class BigContainer extends React.Component {
 		this.handleSequence(bSort(arr));
 	}
 	insertionSort() {
-		if (active) return;
+		if (this.state.active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -146,7 +152,7 @@ class BigContainer extends React.Component {
 		this.handleSequence(iSort(arr));
 	}
 	heapSort() {
-		if (active) return;
+		if (this.state.active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -155,7 +161,7 @@ class BigContainer extends React.Component {
 		this.handeSequence(hSort(arr));
 	}
 	quickSort() {
-		if (active) return;
+		if (this.state.active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -164,7 +170,7 @@ class BigContainer extends React.Component {
 		this.handleSequence(qSort(arr));
 	}
 	mergeSort() {
-		if (active) return;
+		if (this.state.active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -174,13 +180,13 @@ class BigContainer extends React.Component {
 	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
-		active = true;
-		this.handleSequenceLoop(0,numMoves,seq);
+		this.setState({active: true});
+		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),delay);
 	}
 	handleSequenceLoop(cur,upTo,seq) {
-		if (!active) return;
+		if (!this.state.active) return;
 		if (cur >= upTo) {
-			active = false;
+			this.setState({active: false});
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
 			return;
 		}
@@ -237,6 +243,7 @@ class BigContainer extends React.Component {
 				{otherButtons}
 				{sliderContainer}
 				{barContainer}
+				<div id="test">TEST</div>
 			</div>
 		);
 	}
