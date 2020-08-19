@@ -9,7 +9,7 @@ const PIVOT = 3;
 const SORTED = 4;
 
 var speed = 100;
-var stop = true;
+var active = false;
 
 class Bar extends React.Component {
 	render() {
@@ -66,7 +66,7 @@ class BigContainer extends React.Component {
 		document.getElementById("speedSliderDisplay").innerHTML = "SPEED: "+(speed/1000)+"s";
 	}
 	handleStop() {
-		stop = true;
+		active = false;
 		this.setColor(NORMAL);
 	}
 	reset(i,j) {
@@ -110,17 +110,23 @@ class BigContainer extends React.Component {
 		});
 	}
 	shuffle() {
-		stop = false;
+		if (active) return;
 		this.setColor(NORMAL);
+		active = true;
 		this.shuffleLoop(this.state.numBars-1);
 	}
 	shuffleLoop(i) {
-		if (i < 1 || stop) return;
+		if (!active) return;
+		if (i < 1) {
+			active = false;
+			return;
+		}
 		var j = Math.floor(Math.random() * (i+1));
 		this.swap(i,j);
 		setTimeout(()=>this.shuffleLoop(i-1),speed);
 	}
 	bubbleSort() {
+		if (active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -140,6 +146,7 @@ class BigContainer extends React.Component {
 		this.handleSequence(sequence);
 	}
 	insertionSort() {
+		if (active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -159,6 +166,7 @@ class BigContainer extends React.Component {
 		this.handleSequence(sequence);
 	}
 	quickSort() {
+		if (active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -188,6 +196,7 @@ class BigContainer extends React.Component {
 		this.qSortAux(arr,m+1,r,sequence);
 	}
 	mergeSort() {
+		if (active) return;
 		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
@@ -230,11 +239,15 @@ class BigContainer extends React.Component {
 	}
 	handleSequence(seq) {
 		var numMoves = seq.length;
-		stop = false;
+		active = true;
 		this.handleSequenceLoop(0,numMoves,seq);
 	}
 	handleSequenceLoop(cur,upTo,seq) {
-		if (cur >= upTo || stop) return;
+		if (!active) return;
+		if (cur >= upTo) {
+			active = false;
+			return;
+		}
 		if (seq[cur].length === 2 || seq[cur].length === 4) {
 			if (seq[cur].length === 4) this.setActive(seq[cur][2],seq[cur][3], true);
 			this.swap(seq[cur][0], seq[cur][1]);
