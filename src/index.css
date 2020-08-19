@@ -1,6 +1,11 @@
 #menuBar {
 	list-style:none;
 }
+
+#otherButtonsContainer {
+
+}
+
 #barContainer {
 	width:75%;
 	height:60%;

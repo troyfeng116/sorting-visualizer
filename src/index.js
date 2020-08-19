@@ -207,9 +207,13 @@ class BigContainer extends React.Component {
 				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
 				<li><button onClick={()=>this.mergeSort()}>Merge Sort</button></li>
 				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
-				<li><button onClick={()=>this.shuffle()}>Shuffle</button></li>
-				<li><button onClick={()=>this.handleStop()}>Stop</button></li>
 			</ul>
+		);
+		const otherButtons = (
+			<div id="otherButtonsContainer">
+				<button onClick={()=>this.shuffle()}>Shuffle</button>
+				<button onClick={()=>this.handleStop()}>Stop</button>
+			</div>
 		);
 		const sliderContainer = (
 			<div id="sliderContainer">
@@ -221,15 +225,16 @@ class BigContainer extends React.Component {
 				<label for="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
 				<input 
 					type="range" 
-					min="10" max="700" defaultValue="100"  step="10"
+					min="10" max="700" defaultValue="100" step="10"
 					name="speedSlider" id="speedSlider" onInput={() => this.handleSpeedChange()} /><br/>
 				<label for="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
 			</div>
-		)
+		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
 		return (
 			<div id="menuBarContainer">
 				{menuBar}
+				{otherButtons}
 				{sliderContainer}
 				{barContainer}
 				<div id="test">TEST</div>
