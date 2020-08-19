@@ -145,6 +145,15 @@ class BigContainer extends React.Component {
 		}
 		this.handleSequence(iSort(arr));
 	}
+	heapSort() {
+		if (active) return;
+		var arr = this.state.barArray.slice();
+		if (sorted(arr)) {
+			this.setColor(SORTED);
+			return;
+		}
+		this.handeSequence(hSort(arr));
+	}
 	quickSort() {
 		if (active) return;
 		var arr = this.state.barArray.slice();
@@ -172,6 +181,7 @@ class BigContainer extends React.Component {
 		if (!active) return;
 		if (cur >= upTo) {
 			active = false;
+			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
 			return;
 		}
 		if (seq[cur].length === 2 || seq[cur].length === 4) {
@@ -188,15 +198,12 @@ class BigContainer extends React.Component {
 			});
 		}
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
-		if (sorted(this.state.barArray)) {
-			setTimeout(()=>this.setColor(SORTED),speed);
-		}
 	}
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
 				<li><button onClick={()=>this.bubbleSort()}>Bubble Sort</button></li>
-				<li>Selection Sort</li>
+				<li><button onClick={()=>this.heapSort()}>Heap Sort</button></li>
 				<li><button onClick={()=>this.insertionSort()}>Insertion Sort</button></li>
 				<li><button onClick={()=>this.mergeSort()}>Merge Sort</button></li>
 				<li><button onClick={()=>this.quickSort()}>Quick Sort</button></li>
@@ -258,6 +265,10 @@ function iSort(arr) {
 			j--;
 		}
 	}
+	return sequence;
+}
+function hSort(arr) {
+	var sequence = [];
 	return sequence;
 }
 function qSort(arr) {
