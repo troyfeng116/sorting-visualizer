@@ -203,10 +203,10 @@ class BigContainer extends React.Component {
 		const menuBar = (
 			<ul id="menuBar">
 				<li><div onClick={()=>this.bubbleSort()}>Bubble Sort</div></li>
-				<li><div onClick={()=>this.heapSort()}>Heap Sort</div></li>
 				<li><div onClick={()=>this.insertionSort()}>Insertion Sort</div></li>
-				<li><div onClick={()=>this.mergeSort()}>Merge Sort</div></li>
+				<li><div onClick={()=>this.heapSort()}>Heap Sort</div></li>
 				<li><div onClick={()=>this.quickSort()}>Quick Sort</div></li>
+				<li><div onClick={()=>this.mergeSort()}>Merge Sort</div></li>
 			</ul>
 		);
 		const otherButtons = (
@@ -237,7 +237,6 @@ class BigContainer extends React.Component {
 				{otherButtons}
 				{sliderContainer}
 				{barContainer}
-				<div id="test">TEST</div>
 			</div>
 		);
 	}
