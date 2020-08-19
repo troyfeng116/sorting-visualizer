@@ -333,10 +333,11 @@ function merge(arr,l,r,sequence) {
 				i--;
 			}
 			arr[lIndex] = temp;
-			sequence.push([arr.slice(),l,r,lIndex,rIndex]);
 			lIndex++;
-			rIndex++;
 			m++;
+			rIndex++;
+			if (rIndex < arr.length) sequence.push([arr.slice(),l,r,lIndex,rIndex]);
+			else sequence.push([arr.slice(),l,r,lIndex,rIndex-1]);
 		}
 	}
 }
