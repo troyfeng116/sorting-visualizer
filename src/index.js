@@ -132,18 +132,7 @@ class BigContainer extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		var sequence = [];
-		for (let end = arr.length-1; end > 0; end--) {
-			for (let i = 0; i < end; i++) {
-				if (arr[i][0] > arr[i+1][0]) {
-					var temp = arr[i];
-					arr[i] = arr[i+1];
-					arr[i+1] = temp;
-					sequence.push([i,i+1]);
-				}
-			}
-		}
-		this.handleSequence(sequence);
+		this.handleSequence(bSort(arr));
 	}
 	insertionSort() {
 		if (active) return;
@@ -152,18 +141,7 @@ class BigContainer extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		var sequence = [];
-		for (let i = 0; i < arr.length; i++) {
-			var toMove = arr[i];
-			let j = i-1;
-			while (j >= 0 && arr[j][0] > toMove[0]) {
-				arr[j+1] = arr[j];
-				arr[j] = toMove;
-				sequence.push([j,j+1]);
-				j--;
-			}
-		}
-		this.handleSequence(sequence);
+		this.handleSequence(iSort(arr));
 	}
 	quickSort() {
 		if (active) return;
@@ -172,28 +150,7 @@ class BigContainer extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		var sequence = [];
-		this.qSortAux(arr, 0, arr.length-1, sequence);
-		this.handleSequence(sequence);
-	}
-	qSortAux(arr, l, r, sequence) {
-		if (l >= r) return;
-		var splitter = arr[r];
-		var m = l;
-		for (let i = l; i < r; i++) {
-			if (arr[i][0] < splitter[0]) {
-				let temp = arr[i];
-				arr[i] = arr[m];
-				arr[m] = temp;
-				if (i !== m) sequence.push([i,m,l,r]);
-				m++;
-			}
-		}
-		arr[r] = arr[m];
-		arr[m] = splitter;
-		if (m !== r) sequence.push([m,r,l,r]);
-		this.qSortAux(arr,l,m-1,sequence);
-		this.qSortAux(arr,m+1,r,sequence);
+		this.handleSequence(qSort(arr));
 	}
 	mergeSort() {
 		if (active) return;
@@ -305,6 +262,61 @@ class BigContainer extends React.Component {
 	}
 }
 
+/* -------- SORTING ALGORITHMS -------- */
+function bSort(arr) {
+	var sequence = [];
+	for (let end = arr.length-1; end > 0; end--) {
+		for (let i = 0; i < end; i++) {
+			if (arr[i][0] > arr[i+1][0]) {
+				var temp = arr[i];
+				arr[i] = arr[i+1];
+				arr[i+1] = temp;
+				sequence.push([i,i+1]);
+			}
+		}
+	}
+	return sequence;
+}
+function iSort(arr) {
+	var sequence = [];
+	for (let i = 0; i < arr.length; i++) {
+		var toMove = arr[i];
+		let j = i-1;
+		while (j >= 0 && arr[j][0] > toMove[0]) {
+			arr[j+1] = arr[j];
+			arr[j] = toMove;
+			sequence.push([j,j+1]);
+			j--;
+		}
+	}
+	return sequence;
+}
+function qSort(arr) {
+	var sequence = [];
+	qSortAux(arr,0,arr.length-1,sequence);
+	return sequence;
+}
+function qSortAux(arr, l, r, sequence) {
+	if (l >= r) return;
+	var splitter = arr[r];
+	var m = l;
+	for (let i = l; i < r; i++) {
+		if (arr[i][0] < splitter[0]) {
+			let temp = arr[i];
+			arr[i] = arr[m];
+			arr[m] = temp;
+			if (i !== m) sequence.push([i,m,l,r]);
+			m++;
+		}
+	}
+	arr[r] = arr[m];
+	arr[m] = splitter;
+	if (m !== r) sequence.push([m,r,l,r]);
+	qSortAux(arr,l,m-1,sequence);
+	qSortAux(arr,m+1,r,sequence);
+}
+
+/* -------- UTILITY FUNCTIONS -------- */
 function makeArray(n) {
 	var ans = [];
 	for (let i = 1; i <= n; i++) ans.push([i,NORMAL]);
@@ -324,5 +336,5 @@ function sorted(arr) {
 	return true;
 }
 
-// ------------
+/* -------- RENDER -------- */
 ReactDOM.render(<BigContainer />, document.getElementById("root"));
