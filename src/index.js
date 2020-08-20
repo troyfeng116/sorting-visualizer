@@ -75,15 +75,14 @@ class BigContainer extends React.Component {
 		});
 		this.setColor(NORMAL);
 	}
-	reset(i,j) {
+	reset(i) {
 		var arr = this.state.barArray.slice();
 		arr[i][1] = NORMAL;
-		arr[j][1] = NORMAL;
 		this.setState({
 			barArray: arr,
 		});
 	}
-	swap(i,j) {
+	swap(i,j,resetLast) {
 		var arr = this.state.barArray.slice();
 		var temp = arr[i];
 		arr[i] = arr[j];
@@ -93,7 +92,15 @@ class BigContainer extends React.Component {
 		this.setState({
 			barArray: arr,
 		});
-		setTimeout(()=>this.reset(i,j),speed);
+		setTimeout(()=>this.reset(i),speed);
+		if (resetLast) setTimeout(()=>this.reset(j),speed);
+	}
+	setOneBar(index,color) {
+		var arr = this.state.barArray.slice();
+		arr[index][1] = color;
+		this.setState({
+			barArray: arr,
+		});
 	}
 	setColor(color) {
 		var arr = this.state.barArray.slice();
@@ -143,7 +150,7 @@ class BigContainer extends React.Component {
 			return;
 		}
 		var j = Math.floor(Math.random() * (i+1));
-		this.swap(i,j);
+		this.swap(i,j,true);
 		setTimeout(()=>this.shuffleLoop(i-1),speed);
 	}
 	bubbleSort() {
@@ -171,7 +178,7 @@ class BigContainer extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		this.handeSequence(hSort(arr));
+		this.handleSequence(hSort(arr));
 	}
 	quickSort() {
 		if (this.state.active) return;
@@ -203,9 +210,16 @@ class BigContainer extends React.Component {
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
 			return;
 		}
-		if (seq[cur].length === 2 || seq[cur].length === 4) {
-			if (seq[cur].length === 4) this.setActive(seq[cur][2],seq[cur][3], true);
-			this.swap(seq[cur][0], seq[cur][1]);
+		if (seq[cur].length === 2) {
+			this.swap(seq[cur][0], seq[cur][1], true);
+		}
+		else if (seq[cur].length === 3) {
+			this.swap(seq[cur][0], seq[cur][1], false);
+			this.setOneBar(seq[cur][2],SORTED);
+		}
+		else if (seq[cur].length === 4) {
+			this.setActive(seq[cur][2],seq[cur][3], true);
+			this.swap(seq[cur][0], seq[cur][1],true);
 		}
 		else if (seq[cur].length === 5) {
 			this.setActive(seq[cur][1], seq[cur][2], false);
@@ -271,7 +285,8 @@ function bSort(arr) {
 				var temp = arr[i];
 				arr[i] = arr[i+1];
 				arr[i+1] = temp;
-				sequence.push([i,i+1]);
+				if (i === end-1) sequence.push([i,i+1,i+1]);
+				else sequence.push([i,i+1]);
 			}
 		}
 	}
@@ -293,7 +308,32 @@ function iSort(arr) {
 }
 function hSort(arr) {
 	var sequence = [];
+	var size = arr.length;
+	for (let i = size-1; i >= 0; i--) {
+		heapify(arr,i,size,sequence);
+	}
+	for (let last = size-1; last > 0; last--) {
+		var temp = arr[0];
+		arr[0] = arr[last];
+		arr[last] = temp;
+		sequence.push([0,last,last]);
+		heapify(arr,0,last,sequence);
+	}
 	return sequence;
+}
+function heapify(arr,index,size,seq) {
+	var maxIndex = index;
+	var lChild = 2*index+1;
+	var rChild = 2*index+2;
+	if (lChild < size && arr[lChild][0] > arr[maxIndex][0]) maxIndex = lChild;
+	if (rChild < size && arr[rChild][0] > arr[maxIndex][0]) maxIndex = rChild;
+	if (maxIndex !== index) {
+		var temp = arr[index];
+		arr[index] = arr[maxIndex];
+		arr[maxIndex] = temp;
+		seq.push([index,maxIndex]);
+		heapify(arr,maxIndex,size,seq);
+	}
 }
 function qSort(arr) {
 	var sequence = [];
