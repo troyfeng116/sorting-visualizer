@@ -92,8 +92,8 @@ class BigContainer extends React.Component {
 		this.setState({
 			barArray: arr,
 		});
-		setTimeout(()=>this.reset(i),speed);
-		if (resetLast) setTimeout(()=>this.reset(j),speed);
+		if (i !== j) setTimeout(()=>this.reset(i),speed);
+		if (i !== j && resetLast) setTimeout(()=>this.reset(j),speed);
 	}
 	setOneBar(index,color) {
 		var arr = this.state.barArray.slice();
@@ -219,7 +219,7 @@ class BigContainer extends React.Component {
 		}
 		else if (seq[cur].length === 4) {
 			this.setActive(seq[cur][2],seq[cur][3], true);
-			this.swap(seq[cur][0], seq[cur][1],true);
+			this.swap(seq[cur][0], seq[cur][1], true);
 		}
 		else if (seq[cur].length === 5) {
 			this.setActive(seq[cur][1], seq[cur][2], false);
@@ -288,6 +288,7 @@ function bSort(arr) {
 				if (i === end-1) sequence.push([i,i+1,i+1]);
 				else sequence.push([i,i+1]);
 			}
+			if (i === end-1) sequence.push([i+1,i+1,i+1]);
 		}
 	}
 	return sequence;
