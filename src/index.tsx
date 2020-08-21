@@ -13,16 +13,20 @@ const delay = 100;
 /* -------- GLOBAL STATES -------- */
 var speed = 100;
 
-class Bar extends React.Component {
-	render() {
-		return (
-			<div style={this.props.style}>{this.props.val}</div>
-		);
-	}
+type BarProps = {
+	val: number|string,
+	style: React.CSSProperties,
 }
 
-class BarContainer extends React.Component {
-	renderBar(val,style) {
+type BarContainerProps = {
+	numBars: number,
+	barArray: number[][]
+}
+
+const Bar = (props: BarProps) => <div style={props.style}>{props.val}</div>;
+
+class BarContainer extends React.Component<BarContainerProps,{}> {
+	renderBar(val: number|string, style: React.CSSProperties) {
 		return (
 			<Bar val={val} style={style} />
 		);
@@ -30,7 +34,7 @@ class BarContainer extends React.Component {
 	render() {
 		const bars = this.props.barArray;
 		const n = this.props.numBars;
-		const moves = bars.map((val,index) => {
+		const moves = bars.map((val:number[],index:number) => {
 			const barStyle = {
 				width:55/n+"%",
 				height:val[0]/n*100+"%",
@@ -48,17 +52,14 @@ class BarContainer extends React.Component {
 }
 
 class BigContainer extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			numBars: 30,
-			barArray: makeArray(30),
-			active: false,
-		}
+	public state = {
+		numBars: 30,
+		barArray: makeArray(30),
+		active: false,
 	}
 	handleNumBarsChange() {
-		var n = document.getElementById("barSlider").value;
-		document.getElementById("barSliderDisplay").innerHTML = "# BARS: "+n;
+		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
+		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# BARS: "+n;
 		this.setState({
 			numBars: n,
 			barArray: makeArray(n),
@@ -66,8 +67,8 @@ class BigContainer extends React.Component {
 		});
 	}
 	handleSpeedChange() {
-		speed = document.getElementById("speedSlider").value;
-		document.getElementById("speedSliderDisplay").innerHTML = "SPEED: "+(speed/1000)+"s";
+		speed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
+		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "SPEED: "+(speed/1000)+"s";
 	}
 	handleStop() {
 		this.setState({
@@ -75,14 +76,14 @@ class BigContainer extends React.Component {
 		});
 		this.setColor(NORMAL);
 	}
-	reset(i) {
+	reset(i:number) {
 		var arr = this.state.barArray.slice();
 		arr[i][1] = NORMAL;
 		this.setState({
 			barArray: arr,
 		});
 	}
-	swap(i,j,resetLast) {
+	swap(i:number,j:number,resetLast:boolean) {
 		var arr = this.state.barArray.slice();
 		var temp = arr[i];
 		arr[i] = arr[j];
@@ -95,14 +96,14 @@ class BigContainer extends React.Component {
 		if (i !== j) setTimeout(()=>this.reset(i),speed);
 		if (i !== j && resetLast) setTimeout(()=>this.reset(j),speed);
 	}
-	setOneBar(index,color) {
+	setOneBar(index:number,color:number) {
 		var arr = this.state.barArray.slice();
 		arr[index][1] = color;
 		this.setState({
 			barArray: arr,
 		});
 	}
-	setColor(color) {
+	setColor(color:number) {
 		var arr = this.state.barArray.slice();
 		for (let i = 0; i < arr.length; i++) {
 			arr[i][1] = color;
@@ -111,7 +112,7 @@ class BigContainer extends React.Component {
 			barArray: arr,
 		});
 	}
-	setActive(f,t,quickSort) {
+	setActive(f:number,t:number,quickSort:boolean) {
 		var arr = this.state.barArray.slice();
 		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
 		for (let k = f; k <= t; k++) {
@@ -122,7 +123,7 @@ class BigContainer extends React.Component {
 			barArray:arr
 		});
 	}
-	shuffle(instant) {
+	shuffle(instant:boolean) {
 		if (this.state.active) return;
 		this.setColor(NORMAL);
 		if (instant) {
@@ -143,7 +144,7 @@ class BigContainer extends React.Component {
 		});
 		setTimeout(()=>this.shuffleLoop(this.state.numBars-1), delay);
 	}
-	shuffleLoop(i) {
+	shuffleLoop(i:number) {
 		if (this.state.active === false) return;
 		if (i < 1) {
 			this.setState({active: false});
@@ -198,12 +199,12 @@ class BigContainer extends React.Component {
 		}
 		this.handleSequence(mSort(arr));
 	}
-	handleSequence(seq) {
+	handleSequence(seq:number[][]) {
 		var numMoves = seq.length;
 		this.setState({active: true});
 		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),delay);
 	}
-	handleSequenceLoop(cur,upTo,seq) {
+	handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
 		if (!this.state.active) return;
 		if (cur >= upTo) {
 			this.setState({active: false});
@@ -211,18 +212,18 @@ class BigContainer extends React.Component {
 			return;
 		}
 		if (seq[cur].length === 2) {
-			this.swap(seq[cur][0], seq[cur][1], true);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, true);
 		}
 		else if (seq[cur].length === 3) {
-			this.swap(seq[cur][0], seq[cur][1], false);
-			this.setOneBar(seq[cur][2],SORTED);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, false);
+			this.setOneBar(seq[cur][2] as number,SORTED);
 		}
 		else if (seq[cur].length === 4) {
-			this.setActive(seq[cur][2],seq[cur][3], true);
-			this.swap(seq[cur][0], seq[cur][1], true);
+			this.setActive(seq[cur][2] as number,seq[cur][3] as number, true);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, true);
 		}
 		else if (seq[cur].length === 5) {
-			this.setActive(seq[cur][1], seq[cur][2], false);
+			this.setActive(seq[cur][1] as number, seq[cur][2] as number, false);
 			var newArr = seq[cur][0];
 			newArr[seq[cur][3]][1] = COMPARE;
 			newArr[seq[cur][4]][1] = COMPARE;
@@ -256,12 +257,12 @@ class BigContainer extends React.Component {
 					min="5" max="75" defaultValue="30" 
 					name="barSlider" id="barSlider" 
 					onInput={() => this.handleNumBarsChange()} /><br/>
-				<label for="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
+				<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
 				<input 
 					type="range" 
 					min="10" max="700" defaultValue="100" step="10"
 					name="speedSlider" id="speedSlider" onInput={() => this.handleSpeedChange()} /><br/>
-				<label for="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
+				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
 			</div>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
@@ -277,7 +278,7 @@ class BigContainer extends React.Component {
 }
 
 /* -------- SORTING ALGORITHMS -------- */
-function bSort(arr) {
+function bSort(arr:number[][]) {
 	var sequence = [];
 	for (let end = arr.length-1; end > 0; end--) {
 		for (let i = 0; i < end; i++) {
@@ -293,7 +294,7 @@ function bSort(arr) {
 	}
 	return sequence;
 }
-function iSort(arr) {
+function iSort(arr:number[][]) {
 	var sequence = [];
 	for (let i = 0; i < arr.length; i++) {
 		var toMove = arr[i];
@@ -307,8 +308,8 @@ function iSort(arr) {
 	}
 	return sequence;
 }
-function hSort(arr) {
-	var sequence = [];
+function hSort(arr:number[][]) {
+	var sequence: number[][] = [];
 	var size = arr.length;
 	for (let i = size-1; i >= 0; i--) {
 		heapify(arr,i,size,sequence);
@@ -322,7 +323,7 @@ function hSort(arr) {
 	}
 	return sequence;
 }
-function heapify(arr,index,size,seq) {
+function heapify(arr:number[][],index:number,size:number,seq:number[][]) {
 	var maxIndex = index;
 	var lChild = 2*index+1;
 	var rChild = 2*index+2;
@@ -336,12 +337,12 @@ function heapify(arr,index,size,seq) {
 		heapify(arr,maxIndex,size,seq);
 	}
 }
-function qSort(arr) {
-	var sequence = [];
+function qSort(arr:number[][]) {
+	var sequence:number[][] = [];
 	qSortAux(arr,0,arr.length-1,sequence);
 	return sequence;
 }
-function qSortAux(arr, l, r, sequence) {
+function qSortAux(arr:number[][], l:number, r:number, sequence:number[][]) {
 	if (l >= r) return;
 	var splitter = arr[r];
 	var m = l;
@@ -360,19 +361,19 @@ function qSortAux(arr, l, r, sequence) {
 	qSortAux(arr,l,m-1,sequence);
 	qSortAux(arr,m+1,r,sequence);
 }
-function mSort(arr) {
-	var sequence = [];
+function mSort(arr:number[][]) {
+	var sequence:any[][] = [];
 	mSortAux(arr,0,arr.length-1,sequence);
 	return sequence;
 }
-function mSortAux(arr,l,r,sequence) {
+function mSortAux(arr:number[][],l:number,r:number,sequence:any[][]) {
 	if (l >= r) return;
 	var m = Math.floor((l+r)/2);
 	mSortAux(arr,l,m,sequence);
 	mSortAux(arr,m+1,r,sequence);
 	merge(arr,l,r,sequence);
 }
-function merge(arr,l,r,sequence) {
+function merge(arr:number[][],l:number,r:number,sequence:any[][]) {
 	var m = Math.floor((l+r)/2);
 	var lIndex = l;
 	var rIndex = m+1;
@@ -399,19 +400,19 @@ function merge(arr,l,r,sequence) {
 }
 
 /* -------- UTILITY FUNCTIONS -------- */
-function makeArray(n) {
-	var ans = [];
+function makeArray(n:number) {
+	var ans:number[][] = [];
 	for (let i = 1; i <= n; i++) ans.push([i,NORMAL]);
 	return ans;
 }
-function getColor(state) {
+function getColor(state:number) {
 	return state===NORMAL?
 		"rgb(60,60,120)" : state===ACTIVE?
 			"rgb(100,100,255)" : state===COMPARE?
 				"red" : state===PIVOT?
 					"blue" : "rgb(80,210,80)";
 }
-function sorted(arr) {
+function sorted(arr:number[][]) {
 	for (let i = 0; i < arr.length-1; i++) {
 		if (arr[i][0] > arr[i+1][0]) return false;
 	}
