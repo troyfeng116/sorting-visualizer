@@ -124,14 +124,16 @@ class BigContainer extends React.Component {
 	shuffle(instant:boolean) {
 		if (this.state.active) return;
 		this.setColor(NORMAL);
+		var sequence = [];
+		var arr = this.state.barArray.slice();
+		for (let i = this.state.numBars-1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i+1));
+			var temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+			sequence.push([i,j]);
+		}
 		if (instant) {
-			var arr = this.state.barArray.slice();
-			for (let i = this.state.numBars-1; i > 0; i--) {
-				var j = Math.floor(Math.random() * (i+1));
-				var temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
-			}
 			this.setState({
 				barArray: arr,
 			});
@@ -140,17 +142,7 @@ class BigContainer extends React.Component {
 		this.setState({
 			active: true,
 		});
-		setTimeout(()=>this.shuffleLoop(this.state.numBars-1), delay);
-	}
-	shuffleLoop(i:number) {
-		if (this.state.active === false) return;
-		if (i < 1) {
-			this.setState({active: false});
-			return;
-		}
-		var j = Math.floor(Math.random() * (i+1));
-		this.swap(i,j,true);
-		setTimeout(()=>this.shuffleLoop(i-1),speed);
+		this.handleSequence(sequence);
 	}
 	bubbleSort() {
 		if (this.state.active) return;
