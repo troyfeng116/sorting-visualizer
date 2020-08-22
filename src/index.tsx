@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -46,6 +46,27 @@ function BarContainer(props: BarContainerProps) {
 	);
 }
 
+const initialState = {
+	numBars:30,
+	barArray:makeArray(30),
+	active:false
+}
+type bigState {
+	numBars:number,
+	barArray:number[][],
+	active:boolean
+}
+
+type Action =
+ | { type: 'numBarsChange', newNumBars: number }
+
+function reducer(state:bigState, action:Action) {
+	switch (action.type) {
+		case 'numBarsChange':
+		return { numBars: action.newNumBars, barArray:makeArray(action.newNumBars) }
+	}
+}
+
 const BigContainer = () => {
 	const [numBars, setNumBars] = useState(30);
 	const [barArray, setBarArray] = useState(makeArray(30));
@@ -60,7 +81,6 @@ const BigContainer = () => {
 		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# BARS: "+n;
 		setNumBars(n);
 		setBarArray(makeArray(n));
-		setActive(false);
 	}
 	function handleSpeedChange() {
 		speed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
