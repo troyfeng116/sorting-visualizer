@@ -92,8 +92,8 @@ class BigContainer extends React.Component {
 		this.setState({
 			barArray: arr,
 		});
-		if (i !== j) setTimeout(()=>this.reset(i),speed);
-		if (i !== j && resetLast) setTimeout(()=>this.reset(j),speed);
+		if (resetLast) setTimeout(()=>{this.reset(i); this.reset(j)}, speed);
+		else if (i !== j) setTimeout(()=>{this.reset(i)}, speed);
 	}
 	setOneBar(index:number,color:number) {
 		var arr = this.state.barArray.slice();
@@ -122,63 +122,27 @@ class BigContainer extends React.Component {
 			barArray:arr
 		});
 	}
-	shuffle(instant:boolean) {
+	applyAlgorithm(algo: string) {
 		if (this.state.active) return;
-		this.setColor(NORMAL);
 		var arr = this.state.barArray.slice();
-		var seq = fisher_yeats(arr);
-		if (instant) {
-			this.setState({
-				barArray: arr,
-			});
+		if (algo === 'instantShuffle' || algo === 'shuffle') {
+			this.setColor(NORMAL);
+			var seq = fisher_yeats(arr);
+			if (algo === 'shuffle') this.handleSequence(seq);
+			else this.setState({barArray:arr});
 			return;
 		}
-		this.handleSequence(seq);
-	}
-	bubbleSort() {
-		if (this.state.active) return;
-		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
 			this.setColor(SORTED);
 			return;
 		}
-		this.handleSequence(bSort(arr));
-	}
-	insertionSort() {
-		if (this.state.active) return;
-		var arr = this.state.barArray.slice();
-		if (sorted(arr)) {
-			this.setColor(SORTED);
-			return;
+		switch(algo) {
+			case 'bSort': this.handleSequence(bSort(arr)); break;
+			case 'iSort': this.handleSequence(iSort(arr)); break;
+			case 'hSort': this.handleSequence(hSort(arr)); break;
+			case 'qSort': this.handleSequence(qSort(arr)); break;
+			case 'mSort': this.handleSequence(mSort(arr)); break;
 		}
-		this.handleSequence(iSort(arr));
-	}
-	heapSort() {
-		if (this.state.active) return;
-		var arr = this.state.barArray.slice();
-		if (sorted(arr)) {
-			this.setColor(SORTED);
-			return;
-		}
-		this.handleSequence(hSort(arr));
-	}
-	quickSort() {
-		if (this.state.active) return;
-		var arr = this.state.barArray.slice();
-		if (sorted(arr)) {
-			this.setColor(SORTED);
-			return;
-		}
-		this.handleSequence(qSort(arr));
-	}
-	mergeSort() {
-		if (this.state.active) return;
-		var arr = this.state.barArray.slice();
-		if (sorted(arr)) {
-			this.setColor(SORTED);
-			return;
-		}
-		this.handleSequence(mSort(arr));
 	}
 	handleSequence(seq:number[][]) {
 		var numMoves = seq.length;
@@ -218,17 +182,17 @@ class BigContainer extends React.Component {
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
-				<li><div onClick={()=>this.bubbleSort()}>Bubble Sort</div></li>
-				<li><div onClick={()=>this.insertionSort()}>Insertion Sort</div></li>
-				<li><div onClick={()=>this.heapSort()}>Heap Sort</div></li>
-				<li><div onClick={()=>this.quickSort()}>Quick Sort</div></li>
-				<li><div onClick={()=>this.mergeSort()}>Merge Sort</div></li>
+				<li><div onClick={()=>this.applyAlgorithm('bSort')}>Bubble Sort</div></li>
+				<li><div onClick={()=>this.applyAlgorithm('iSort')}>Insertion Sort</div></li>
+				<li><div onClick={()=>this.applyAlgorithm('hSort')}>Heap Sort</div></li>
+				<li><div onClick={()=>this.applyAlgorithm('qSort')}>Quick Sort</div></li>
+				<li><div onClick={()=>this.applyAlgorithm('mSort')}>Merge Sort</div></li>
 			</ul>
 		);
 		const otherButtons = (
 			<div id="otherButtonsContainer">
-				<div onClick={()=>this.shuffle(false)}>Shuffle</div><br/>
-				<div onClick={()=>this.shuffle(true)}>Instant Shuffle</div><br/>
+				<div onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
+				<div onClick={()=>this.applyAlgorithm('instantShuffle')}>Instant Shuffle</div><br/>
 				<div onClick={()=>this.handleStop()}>Stop</div>
 			</div>
 		);
