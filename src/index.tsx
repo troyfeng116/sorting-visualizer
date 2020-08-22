@@ -10,13 +10,9 @@ import { iSort } from './algorithms/insertionSort';
 import { hSort } from './algorithms/heapSort';
 import { fisher_yeats } from './algorithms/shuffle';
 
-/* -------- CONSTANTS -------- */
-const NORMAL = 0;
-const ACTIVE = 1;
-const COMPARE = 2;
-const PIVOT = 3;
-const SORTED = 4;
-const delay = 100;
+/* -------- CONSTANTS & UTILITIES -------- */
+import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './utility/constants';
+import { makeArray, getColor, sorted } from './utility/functions';
 
 type BarProps = {
 	val: number|string,
@@ -146,7 +142,7 @@ class BigContainer extends React.Component {
 	handleSequence(seq:number[][]) {
 		var numMoves = seq.length;
 		this.setState({active: true});
-		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),delay);
+		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),DELAY);
 	}
 	handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
 		if (!this.state.active) return;
@@ -212,7 +208,7 @@ class BigContainer extends React.Component {
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
 		return (
-			<div id="menuBarContainer">
+			<div>
 				{menuBar}
 				{otherButtons}
 				{sliderContainer}
@@ -220,26 +216,6 @@ class BigContainer extends React.Component {
 			</div>
 		);
 	}
-}
-
-/* -------- UTILITY FUNCTIONS -------- */
-function makeArray(n:number) {
-	var ans:number[][] = [];
-	for (let i = 1; i <= n; i++) ans.push([i,NORMAL]);
-	return ans;
-}
-function getColor(state:number) {
-	return state===NORMAL?
-		"rgb(60,60,120)" : state===ACTIVE?
-			"rgb(100,100,255)" : state===COMPARE?
-				"red" : state===PIVOT?
-					"blue" : "rgb(80,210,80)";
-}
-function sorted(arr:number[][]) {
-	for (let i = 0; i < arr.length-1; i++) {
-		if (arr[i][0] > arr[i+1][0]) return false;
-	}
-	return true;
 }
 
 /* -------- RENDER -------- */
