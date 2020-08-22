@@ -18,9 +18,6 @@ const PIVOT = 3;
 const SORTED = 4;
 const delay = 100;
 
-/* -------- GLOBAL STATES -------- */
-var speed = 100;
-
 type BarProps = {
 	val: number|string,
 	style: React.CSSProperties,
@@ -55,6 +52,7 @@ class BigContainer extends React.Component {
 		numBars: 30,
 		barArray: makeArray(30),
 		active: false,
+		speed: 100
 	}
 	handleNumBarsChange() {
 		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
@@ -66,8 +64,9 @@ class BigContainer extends React.Component {
 		});
 	}
 	handleSpeedChange() {
-		speed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
-		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "SPEED: "+(speed/1000)+"s";
+		var newSpeed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
+		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "SPEED: "+(newSpeed/1000)+"s";
+		this.setState({speed: newSpeed});
 	}
 	handleStop() {
 		this.setState({
@@ -92,8 +91,8 @@ class BigContainer extends React.Component {
 		this.setState({
 			barArray: arr,
 		});
-		if (resetLast) setTimeout(()=>{this.reset(i); this.reset(j)}, speed);
-		else if (i !== j) setTimeout(()=>{this.reset(i)}, speed);
+		if (resetLast) setTimeout(()=>{this.reset(i); this.reset(j)}, this.state.speed);
+		else if (i !== j) setTimeout(()=>{this.reset(i)}, this.state.speed);
 	}
 	setOneBar(index:number,color:number) {
 		var arr = this.state.barArray.slice();
@@ -153,8 +152,8 @@ class BigContainer extends React.Component {
 		if (!this.state.active) return;
 		if (cur >= upTo) {
 			this.setState({active: false});
-			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
-			else setTimeout(()=>this.setColor(NORMAL), speed);
+			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), this.state.speed);
+			else setTimeout(()=>this.setColor(NORMAL), this.state.speed);
 			return;
 		}
 		if (seq[cur].length === 2) {
@@ -177,7 +176,7 @@ class BigContainer extends React.Component {
 				barArray: newArr,
 			});
 		}
-		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), this.state.speed);
 	}
 	render() {
 		const menuBar = (
