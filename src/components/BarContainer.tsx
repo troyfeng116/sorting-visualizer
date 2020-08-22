@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import { getColor } from './../utility/functions';
 import { Bar } from './Bar';
 
