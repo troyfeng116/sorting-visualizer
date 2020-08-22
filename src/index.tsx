@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-/* -------- SORTING ALGORITHMS -------- */
+/* -------- ALGORITHMS -------- */
 import { mSort } from './algorithms/mergeSort';
 import { qSort } from './algorithms/quickSort';
 import { bSort } from './algorithms/bubbleSort';
 import { iSort } from './algorithms/insertionSort';
 import { hSort } from './algorithms/heapSort';
+import { fisher_yeats } from './algorithms/shuffle';
 
 /* -------- CONSTANTS -------- */
 const NORMAL = 0;
@@ -124,25 +125,15 @@ class BigContainer extends React.Component {
 	shuffle(instant:boolean) {
 		if (this.state.active) return;
 		this.setColor(NORMAL);
-		var sequence = [];
 		var arr = this.state.barArray.slice();
-		for (let i = this.state.numBars-1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i+1));
-			var temp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = temp;
-			sequence.push([i,j]);
-		}
+		var seq = fisher_yeats(arr);
 		if (instant) {
 			this.setState({
 				barArray: arr,
 			});
 			return;
 		}
-		this.setState({
-			active: true,
-		});
-		this.handleSequence(sequence);
+		this.handleSequence(seq);
 	}
 	bubbleSort() {
 		if (this.state.active) return;
@@ -199,6 +190,7 @@ class BigContainer extends React.Component {
 		if (cur >= upTo) {
 			this.setState({active: false});
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
+			else setTimeout(()=>this.setColor(NORMAL), speed);
 			return;
 		}
 		if (seq[cur].length === 2) {
