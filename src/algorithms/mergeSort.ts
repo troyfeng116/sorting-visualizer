@@ -30,7 +30,7 @@ function merge(arr:number[][],l:number,r:number,sequence:any[][]) {
 			lIndex++;
 			m++;
 			rIndex++;
-			if (rIndex < arr.length) sequence.push([arr.slice(),l,r,lIndex,rIndex]);
+			if (rIndex <= r) sequence.push([arr.slice(),l,r,lIndex,rIndex]);
 			else sequence.push([arr.slice(),l,r,lIndex,rIndex-1]);
 		}
 	}
