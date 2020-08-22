@@ -4,4 +4,6 @@ type BarProps = {
 	val: number|string,
 	style: React.CSSProperties,
 }
-export const Bar = (props: BarProps) => <div style={props.style}>{props.val}</div>;
+const Bar = (props: BarProps) => <div style={props.style}>{props.val}</div>;
+
+export { Bar };

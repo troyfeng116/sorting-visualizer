@@ -15,7 +15,7 @@ import { makeArray, sorted } from './../utility/functions';
 /* -------- COMPONENTS -------- */
 import { BarContainer } from './BarContainer';
 
-export class Bundle extends React.Component {
+class Bundle extends React.Component {
 	public state = {
 		numBars: 30,
 		barArray: makeArray(30),
@@ -189,3 +189,5 @@ export class Bundle extends React.Component {
 		);
 	}
 }
+
+export { Bundle };

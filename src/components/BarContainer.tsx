@@ -7,7 +7,7 @@ type BarContainerProps = {
 	numBars: number,
 	barArray: number[][]
 }
-export function BarContainer(props: BarContainerProps) {
+function BarContainer(props: BarContainerProps) {
 	const bars = props.barArray;
 	const n = props.numBars;
 	const moves = bars.map((val:number[],index:number) => {
@@ -25,3 +25,5 @@ export function BarContainer(props: BarContainerProps) {
 		</div>
 	);
 }
+
+export { BarContainer };
