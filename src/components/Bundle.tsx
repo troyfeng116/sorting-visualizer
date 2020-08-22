@@ -95,7 +95,7 @@ class Bundle extends React.Component {
 		if (algo === 'instantShuffle' || algo === 'shuffle') {
 			this.setColor(NORMAL);
 			var seq = fisher_yeats(arr);
-			if (algo === 'shuffle') this.handleSequence(seq);
+			if (algo === 'shuffle') this.handleSequence(seq, 'shuffle');
 			else this.setState({barArray:arr});
 			return;
 		}
@@ -104,24 +104,29 @@ class Bundle extends React.Component {
 			return;
 		}
 		switch(algo) {
-			case 'bSort': this.handleSequence(bSort(arr)); break;
-			case 'iSort': this.handleSequence(iSort(arr)); break;
-			case 'hSort': this.handleSequence(hSort(arr)); break;
-			case 'qSort': this.handleSequence(qSort(arr)); break;
-			case 'mSort': this.handleSequence(mSort(arr)); break;
+			case 'bSort': this.handleSequence(bSort(arr), algo); break;
+			case 'iSort': this.handleSequence(iSort(arr), algo); break;
+			case 'hSort': this.handleSequence(hSort(arr), algo); break;
+			case 'qSort': this.handleSequence(qSort(arr), algo); break;
+			case 'mSort': this.handleSequence(mSort(arr), algo); break;
 		}
 	}
-	handleSequence(seq:number[][]) {
+	handleSequence(seq:number[][], algo:string) {
 		var numMoves = seq.length;
+		(document.getElementById(algo) as HTMLDivElement).className = "currentlyRunning";
 		this.setState({currentlyRunning: true});
-		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),DELAY);
+		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq,algo),DELAY);
 	}
-	handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
-		if (!this.state.currentlyRunning) return;
+	handleSequenceLoop(cur:number,upTo:number,seq:any[][],algo:string) {
+		if (!this.state.currentlyRunning) {
+			(document.getElementById(algo) as HTMLDivElement).className = "";
+			return;
+		}
 		if (cur >= upTo) {
 			this.setState({currentlyRunning: false});
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), this.state.speed);
 			else setTimeout(()=>this.setColor(NORMAL), this.state.speed);
+			(document.getElementById(algo) as HTMLDivElement).className = "";
 			return;
 		}
 		if (seq[cur].length === 2) {
@@ -144,22 +149,22 @@ class Bundle extends React.Component {
 				barArray: newArr,
 			});
 		}
-		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), this.state.speed);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq,algo), this.state.speed);
 	}
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
-				<li><div onClick={()=>this.applyAlgorithm('bSort')}>Bubble Sort</div></li>
-				<li><div onClick={()=>this.applyAlgorithm('iSort')}>Insertion Sort</div></li>
-				<li><div onClick={()=>this.applyAlgorithm('hSort')}>Heap Sort</div></li>
-				<li><div onClick={()=>this.applyAlgorithm('qSort')}>Quick Sort</div></li>
-				<li><div onClick={()=>this.applyAlgorithm('mSort')}>Merge Sort</div></li>
+				<li><div id='bSort' onClick={()=>this.applyAlgorithm('bSort')}>Bubble Sort</div></li>
+				<li><div id='iSort' onClick={()=>this.applyAlgorithm('iSort')}>Insertion Sort</div></li>
+				<li><div id='hSort' onClick={()=>this.applyAlgorithm('hSort')}>Heap Sort</div></li>
+				<li><div id='qSort' onClick={()=>this.applyAlgorithm('qSort')}>Quick Sort</div></li>
+				<li><div id='mSort' onClick={()=>this.applyAlgorithm('mSort')}>Merge Sort</div></li>
 			</ul>
 		);
 		const otherButtons = (
 			<div id="otherButtonsContainer">
-				<div onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
-				<div onClick={()=>this.applyAlgorithm('instantShuffle')}>Instant Shuffle</div><br/>
+				<div id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
+				<div id='instantShuffle' onClick={()=>this.applyAlgorithm('instantShuffle')}>Instant Shuffle</div><br/>
 				<div onClick={()=>this.handleStop()}>Stop</div>
 			</div>
 		);

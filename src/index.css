@@ -15,7 +15,7 @@
 	margin:1vw;
 	width:10vw;
 }
-#menuBar li div:hover {
+#menuBar li div:hover:not(.currentlyRunning) {
 	background-color:rgb(60,60,120);
 	color:white;
 	cursor:pointer;
@@ -41,8 +41,13 @@
 	margin:10px;
 	border:solid 1px black;
 }
-#otherButtonsContainer div:hover {
+#otherButtonsContainer div:hover:not(.currentlyRunning) {
 	background-color:rgb(60,60,120);
+	color:white;
+	cursor:pointer;
+}
+.currentlyRunning {
+	background-color:rgb(80,210,80);
 	color:white;
 	cursor:pointer;
 }
