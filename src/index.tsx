@@ -14,34 +14,9 @@ import { fisher_yeats } from './algorithms/shuffle';
 import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './utility/constants';
 import { makeArray, getColor, sorted } from './utility/functions';
 
-type BarProps = {
-	val: number|string,
-	style: React.CSSProperties,
-}
-const Bar = (props: BarProps) => <div style={props.style}>{props.val}</div>;
-
-type BarContainerProps = {
-	numBars: number,
-	barArray: number[][]
-}
-function BarContainer(props: BarContainerProps) {
-	const bars = props.barArray;
-	const n = props.numBars;
-	const moves = bars.map((val:number[],index:number) => {
-		const barStyle = {
-			width:55/n+"%",
-			height:val[0]/n*100+"%",
-			left:index*100/n+"%",
-			backgroundColor:getColor(val[1])
-		};
-      	return n <= 40? <Bar val={val[0]} style={barStyle} /> : <Bar val={""} style={barStyle} />;
-    });
-	return (
-		<div id="barContainer">
-			{moves}
-		</div>
-	);
-}
+/* -------- COMPONENTS -------- */
+import { Bar } from './components/Bar';
+import { BarContainer } from './components/BarContainer';
 
 class BigContainer extends React.Component {
 	public state = {
