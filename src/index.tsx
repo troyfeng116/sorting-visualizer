@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -50,7 +50,11 @@ const BigContainer = () => {
 	const [numBars, setNumBars] = useState(30);
 	const [barArray, setBarArray] = useState(makeArray(30));
 	const [active, setActive] = useState(false);
-	
+	var globArr = barArray;
+	useEffect(()=>{
+		(document.getElementById("test") as HTMLDivElement).innerHTML += barArray + "<br>";
+	},[barArray]);
+
 	function handleNumBarsChange() {
 		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
 		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# BARS: "+n;
@@ -78,9 +82,9 @@ const BigContainer = () => {
 		arr[j] = temp;
 		arr[i][1] = COMPARE;
 		arr[j][1] = COMPARE;
-		setBarArray(arr);
-		if (i !== j) setTimeout(()=>reset(i),speed);
-		if (i !== j && resetLast) setTimeout(()=>reset(j),speed);
+		setBarArray(prevBarArray => arr);
+		//setTimeout(()=>reset(i),speed);
+		//setTimeout(()=>reset(j),speed);
 	}
 	function setOneBar(index:number,color:number) {
 		var arr = barArray.slice();
@@ -104,7 +108,6 @@ const BigContainer = () => {
 		setBarArray(arr);
 	}
 	function shuffle(instant:boolean) {
-		(document.getElementById("test") as HTMLDivElement).innerHTML += active;
 		if (active) return;
 		setColor(NORMAL);
 		if (instant) {
@@ -118,11 +121,11 @@ const BigContainer = () => {
 			setBarArray(arr);
 			return;
 		}
-		setActive(true);
+		setActive(prevActive => true);
 		setTimeout(()=>shuffleLoop(numBars-1), delay);
 	}
 	function shuffleLoop(i:number) {
-		if (active === false) return;
+		if (active) return;
 		if (i < 1) {
 			setActive(false);
 			return;
@@ -168,7 +171,6 @@ const BigContainer = () => {
 		handleSequence(qSort(arr));
 	}
 	function mergeSort() {
-		(document.getElementById("test") as HTMLDivElement).innerHTML += active;
 		if (active) return;
 		var arr = barArray.slice();
 		if (sorted(arr)) {
@@ -176,8 +178,6 @@ const BigContainer = () => {
 			return;
 		}
 		var sequence = mSort(arr);
-		var test = sequence[sequence.length-1];
-		(document.getElementById("test") as HTMLDivElement).innerHTML += test;
 		handleSequence(mSort(arr));
 	}
 	function handleSequence(seq:number[][]) {
@@ -188,7 +188,8 @@ const BigContainer = () => {
 		(document.getElementById("test") as HTMLDivElement).innerHTML += active;
 	}
 	function handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
-		if (!active) return;
+		(document.getElementById("test") as HTMLDivElement).innerHTML += "LOOP";
+		if (active) return;
 		if (cur >= upTo) {
 			setActive(false);
 			if (sorted(barArray)) setTimeout(()=>setColor(SORTED), speed);
@@ -254,6 +255,7 @@ const BigContainer = () => {
 			{sliderContainer}
 			{barContainer}
 			<div id="test">TEST</div>
+			<button onClick={()=>swap(0,29,true)}>TESTBUTTON</button>
 		</div>
 	);
 }
