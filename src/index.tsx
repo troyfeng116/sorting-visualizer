@@ -2,6 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+/* -------- SORTING ALGORITHMS -------- */
+import { mSort } from './algorithms/mergeSort';
+import { qSort } from './algorithms/quickSort';
+import { bSort } from './algorithms/bubbleSort';
+import { iSort } from './algorithms/insertionSort';
+import { hSort } from './algorithms/heapSort';
+
 /* -------- CONSTANTS -------- */
 const NORMAL = 0;
 const ACTIVE = 1;
@@ -17,16 +24,12 @@ type BarProps = {
 	val: number|string,
 	style: React.CSSProperties,
 }
-
-/* ES6 arrow function component. */
 const Bar = (props: BarProps) => <div style={props.style}>{props.val}</div>;
 
 type BarContainerProps = {
 	numBars: number,
 	barArray: number[][]
 }
-
-/* Regular ts function component. */
 function BarContainer(props: BarContainerProps) {
 	const bars = props.barArray;
 	const n = props.numBars;
@@ -269,128 +272,6 @@ class BigContainer extends React.Component {
 				{barContainer}
 			</div>
 		);
-	}
-}
-
-/* -------- SORTING ALGORITHMS -------- */
-function bSort(arr:number[][]) {
-	var sequence = [];
-	for (let end = arr.length-1; end > 0; end--) {
-		for (let i = 0; i < end; i++) {
-			if (arr[i][0] > arr[i+1][0]) {
-				var temp = arr[i];
-				arr[i] = arr[i+1];
-				arr[i+1] = temp;
-				if (i === end-1) sequence.push([i,i+1,i+1]);
-				else sequence.push([i,i+1]);
-			}
-			if (i === end-1) sequence.push([i+1,i+1,i+1]);
-		}
-	}
-	return sequence;
-}
-function iSort(arr:number[][]) {
-	var sequence = [];
-	for (let i = 0; i < arr.length; i++) {
-		var toMove = arr[i];
-		let j = i-1;
-		while (j >= 0 && arr[j][0] > toMove[0]) {
-			arr[j+1] = arr[j];
-			arr[j] = toMove;
-			sequence.push([j,j+1]);
-			j--;
-		}
-	}
-	return sequence;
-}
-function hSort(arr:number[][]) {
-	var sequence: number[][] = [];
-	var size = arr.length;
-	for (let i = size-1; i >= 0; i--) {
-		heapify(arr,i,size,sequence);
-	}
-	for (let last = size-1; last > 0; last--) {
-		var temp = arr[0];
-		arr[0] = arr[last];
-		arr[last] = temp;
-		sequence.push([0,last,last]);
-		heapify(arr,0,last,sequence);
-	}
-	return sequence;
-}
-function heapify(arr:number[][],index:number,size:number,seq:number[][]) {
-	var maxIndex = index;
-	var lChild = 2*index+1;
-	var rChild = 2*index+2;
-	if (lChild < size && arr[lChild][0] > arr[maxIndex][0]) maxIndex = lChild;
-	if (rChild < size && arr[rChild][0] > arr[maxIndex][0]) maxIndex = rChild;
-	if (maxIndex !== index) {
-		var temp = arr[index];
-		arr[index] = arr[maxIndex];
-		arr[maxIndex] = temp;
-		seq.push([index,maxIndex]);
-		heapify(arr,maxIndex,size,seq);
-	}
-}
-function qSort(arr:number[][]) {
-	var sequence:number[][] = [];
-	qSortAux(arr,0,arr.length-1,sequence);
-	return sequence;
-}
-function qSortAux(arr:number[][], l:number, r:number, sequence:number[][]) {
-	if (l >= r) return;
-	var splitter = arr[r];
-	var m = l;
-	for (let i = l; i < r; i++) {
-		if (arr[i][0] < splitter[0]) {
-			let temp = arr[i];
-			arr[i] = arr[m];
-			arr[m] = temp;
-			if (i !== m) sequence.push([i,m,l,r]);
-			m++;
-		}
-	}
-	arr[r] = arr[m];
-	arr[m] = splitter;
-	if (m !== r) sequence.push([m,r,l,r]);
-	qSortAux(arr,l,m-1,sequence);
-	qSortAux(arr,m+1,r,sequence);
-}
-function mSort(arr:number[][]) {
-	var sequence:any[][] = [];
-	mSortAux(arr,0,arr.length-1,sequence);
-	return sequence;
-}
-function mSortAux(arr:number[][],l:number,r:number,sequence:any[][]) {
-	if (l >= r) return;
-	var m = Math.floor((l+r)/2);
-	mSortAux(arr,l,m,sequence);
-	mSortAux(arr,m+1,r,sequence);
-	merge(arr,l,r,sequence);
-}
-function merge(arr:number[][],l:number,r:number,sequence:any[][]) {
-	var m = Math.floor((l+r)/2);
-	var lIndex = l;
-	var rIndex = m+1;
-	while (lIndex <= m && rIndex <= r) {
-		if (arr[lIndex][0] <= arr[rIndex][0]) {
-			lIndex++;
-			sequence.push([arr.slice(),l,r,lIndex,rIndex]);
-		}
-		else {
-			var temp = arr[rIndex];
-			var i = rIndex;
-			while (i !== lIndex) {
-				arr[i] = arr[i-1];
-				i--;
-			}
-			arr[lIndex] = temp;
-			lIndex++;
-			m++;
-			rIndex++;
-			if (rIndex < arr.length) sequence.push([arr.slice(),l,r,lIndex,rIndex]);
-			else sequence.push([arr.slice(),l,r,lIndex,rIndex-1]);
-		}
 	}
 }
 
