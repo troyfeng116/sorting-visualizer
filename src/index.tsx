@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useReducer } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -46,238 +46,230 @@ function BarContainer(props: BarContainerProps) {
 	);
 }
 
-const initialState = {
-	numBars:30,
-	barArray:makeArray(30),
-	active:false
-}
-type bigState {
-	numBars:number,
-	barArray:number[][],
-	active:boolean
-}
-
-type Action =
- | { type: 'numBarsChange', newNumBars: number }
-
-function reducer(state:bigState, action:Action) {
-	switch (action.type) {
-		case 'numBarsChange':
-		return { numBars: action.newNumBars, barArray:makeArray(action.newNumBars) }
+class BigContainer extends React.Component {
+	public state = {
+		numBars: 30,
+		barArray: makeArray(30),
+		active: false,
 	}
-}
-
-const BigContainer = () => {
-	const [numBars, setNumBars] = useState(30);
-	const [barArray, setBarArray] = useState(makeArray(30));
-	const [active, setActive] = useState(false);
-	var globArr = barArray;
-	useEffect(()=>{
-		(document.getElementById("test") as HTMLDivElement).innerHTML += barArray + "<br>";
-	},[barArray]);
-
-	function handleNumBarsChange() {
+	handleNumBarsChange() {
 		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
 		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# BARS: "+n;
-		setNumBars(n);
-		setBarArray(makeArray(n));
+		this.setState({
+			numBars: n,
+			barArray: makeArray(n),
+			active: false,
+		});
 	}
-	function handleSpeedChange() {
+	handleSpeedChange() {
 		speed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
 		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "SPEED: "+(speed/1000)+"s";
 	}
-	function handleStop() {
-		setActive(false);
-		setColor(NORMAL);
+	handleStop() {
+		this.setState({
+			active: false,
+		});
+		this.setColor(NORMAL);
 	}
-	function reset(i:number) {
-		var arr = barArray.slice();
+	reset(i:number) {
+		var arr = this.state.barArray.slice();
 		arr[i][1] = NORMAL;
-		setBarArray(arr);
+		this.setState({
+			barArray: arr,
+		});
 	}
-	function swap(i:number,j:number,resetLast:boolean) {
-		var arr = barArray.slice();
+	swap(i:number,j:number,resetLast:boolean) {
+		var arr = this.state.barArray.slice();
 		var temp = arr[i];
 		arr[i] = arr[j];
 		arr[j] = temp;
 		arr[i][1] = COMPARE;
 		arr[j][1] = COMPARE;
-		setBarArray(prevBarArray => arr);
-		//setTimeout(()=>reset(i),speed);
-		//setTimeout(()=>reset(j),speed);
+		this.setState({
+			barArray: arr,
+		});
+		if (i !== j) setTimeout(()=>this.reset(i),speed);
+		if (i !== j && resetLast) setTimeout(()=>this.reset(j),speed);
 	}
-	function setOneBar(index:number,color:number) {
-		var arr = barArray.slice();
+	setOneBar(index:number,color:number) {
+		var arr = this.state.barArray.slice();
 		arr[index][1] = color;
-		setBarArray(arr);
+		this.setState({
+			barArray: arr,
+		});
 	}
-	function setColor(color:number) {
-		var arr = barArray.slice();
+	setColor(color:number) {
+		var arr = this.state.barArray.slice();
 		for (let i = 0; i < arr.length; i++) {
 			arr[i][1] = color;
 		}
-		setBarArray(arr);
+		this.setState({
+			barArray: arr,
+		});
 	}
-	function setRangeActive(f:number,t:number,quickSort:boolean) {
-		var arr = barArray.slice();
+	setActive(f:number,t:number,quickSort:boolean) {
+		var arr = this.state.barArray.slice();
 		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
 		for (let k = f; k <= t; k++) {
 			arr[k][1] = ACTIVE;
 		}
 		if (quickSort) arr[t][1] = PIVOT;
-		setBarArray(arr);
+		this.setState({
+			barArray:arr
+		});
 	}
-	function shuffle(instant:boolean) {
-		if (active) return;
-		setColor(NORMAL);
+	shuffle(instant:boolean) {
+		if (this.state.active) return;
+		this.setColor(NORMAL);
 		if (instant) {
-			var arr = barArray.slice();
-			for (let i = numBars-1; i > 0; i--) {
+			var arr = this.state.barArray.slice();
+			for (let i = this.state.numBars-1; i > 0; i--) {
 				var j = Math.floor(Math.random() * (i+1));
 				var temp = arr[i];
 				arr[i] = arr[j];
 				arr[j] = temp;
 			}
-			setBarArray(arr);
+			this.setState({
+				barArray: arr,
+			});
 			return;
 		}
-		setActive(prevActive => true);
-		setTimeout(()=>shuffleLoop(numBars-1), delay);
+		this.setState({
+			active: true,
+		});
+		setTimeout(()=>this.shuffleLoop(this.state.numBars-1), delay);
 	}
-	function shuffleLoop(i:number) {
-		if (active) return;
+	shuffleLoop(i:number) {
+		if (this.state.active === false) return;
 		if (i < 1) {
-			setActive(false);
+			this.setState({active: false});
 			return;
 		}
 		var j = Math.floor(Math.random() * (i+1));
-		swap(i,j,true);
-		setTimeout(()=>shuffleLoop(i-1),speed);
+		this.swap(i,j,true);
+		setTimeout(()=>this.shuffleLoop(i-1),speed);
 	}
-	function bubbleSort() {
-		if (active) return;
-		var arr = barArray.slice();
+	bubbleSort() {
+		if (this.state.active) return;
+		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
-			setColor(SORTED);
+			this.setColor(SORTED);
 			return;
 		}
-		handleSequence(bSort(arr));
+		this.handleSequence(bSort(arr));
 	}
-	function insertionSort() {
-		if (active) return;
-		var arr = barArray.slice();
+	insertionSort() {
+		if (this.state.active) return;
+		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
-			setColor(SORTED);
+			this.setColor(SORTED);
 			return;
 		}
-		handleSequence(iSort(arr));
+		this.handleSequence(iSort(arr));
 	}
-	function heapSort() {
-		if (active) return;
-		var arr = barArray.slice();
+	heapSort() {
+		if (this.state.active) return;
+		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
-			setColor(SORTED);
+			this.setColor(SORTED);
 			return;
 		}
-		handleSequence(hSort(arr));
+		this.handleSequence(hSort(arr));
 	}
-	function quickSort() {
-		if (active) return;
-		var arr = barArray.slice();
+	quickSort() {
+		if (this.state.active) return;
+		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
-			setColor(SORTED);
+			this.setColor(SORTED);
 			return;
 		}
-		handleSequence(qSort(arr));
+		this.handleSequence(qSort(arr));
 	}
-	function mergeSort() {
-		if (active) return;
-		var arr = barArray.slice();
+	mergeSort() {
+		if (this.state.active) return;
+		var arr = this.state.barArray.slice();
 		if (sorted(arr)) {
-			setColor(SORTED);
+			this.setColor(SORTED);
 			return;
 		}
-		var sequence = mSort(arr);
-		handleSequence(mSort(arr));
+		this.handleSequence(mSort(arr));
 	}
-	function handleSequence(seq:number[][]) {
+	handleSequence(seq:number[][]) {
 		var numMoves = seq.length;
-		setActive(true);
-		(document.getElementById("test") as HTMLDivElement).innerHTML += active;
-		setTimeout(()=>handleSequenceLoop(0,numMoves,seq),delay);
-		(document.getElementById("test") as HTMLDivElement).innerHTML += active;
+		this.setState({active: true});
+		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq),delay);
 	}
-	function handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
-		(document.getElementById("test") as HTMLDivElement).innerHTML += "LOOP";
-		if (active) return;
+	handleSequenceLoop(cur:number,upTo:number,seq:any[][]) {
+		if (!this.state.active) return;
 		if (cur >= upTo) {
-			setActive(false);
-			if (sorted(barArray)) setTimeout(()=>setColor(SORTED), speed);
+			this.setState({active: false});
+			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), speed);
 			return;
 		}
 		if (seq[cur].length === 2) {
-			swap(seq[cur][0] as number, seq[cur][1] as number, true);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, true);
 		}
 		else if (seq[cur].length === 3) {
-			swap(seq[cur][0] as number, seq[cur][1] as number, false);
-			setOneBar(seq[cur][2] as number,SORTED);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, false);
+			this.setOneBar(seq[cur][2] as number,SORTED);
 		}
 		else if (seq[cur].length === 4) {
-			setRangeActive(seq[cur][2] as number,seq[cur][3] as number, true);
-			swap(seq[cur][0] as number, seq[cur][1] as number, true);
+			this.setActive(seq[cur][2] as number,seq[cur][3] as number, true);
+			this.swap(seq[cur][0] as number, seq[cur][1] as number, true);
 		}
 		else if (seq[cur].length === 5) {
-			setRangeActive(seq[cur][1] as number, seq[cur][2] as number, false);
+			this.setActive(seq[cur][1] as number, seq[cur][2] as number, false);
 			var newArr = seq[cur][0];
 			newArr[seq[cur][3]][1] = COMPARE;
 			newArr[seq[cur][4]][1] = COMPARE;
-			setBarArray(newArr);
+			this.setState({
+				barArray: newArr,
+			});
 		}
-		setTimeout(()=>handleSequenceLoop(cur+1,upTo,seq), speed);
+		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq), speed);
 	}
-		
-	const menuBar = (
-		<ul id="menuBar">
-			<li><div onClick={()=>bubbleSort()}>Bubble Sort</div></li>
-			<li><div onClick={()=>insertionSort()}>Insertion Sort</div></li>
-			<li><div onClick={()=>heapSort()}>Heap Sort</div></li>
-			<li><div onClick={()=>quickSort()}>Quick Sort</div></li>
-			<li><div onClick={()=>mergeSort()}>Merge Sort</div></li>
-		</ul>
-	);
-	const otherButtons = (
-		<div id="otherButtonsContainer">
-			<div onClick={()=>shuffle(false)}>Shuffle</div><br/>
-			<div onClick={()=>shuffle(true)}>Instant Shuffle</div><br/>
-			<div onClick={()=>handleStop()}>Stop</div>
-		</div>
-	);
-	const sliderContainer = (
-		<div id="sliderContainer">
-			<input 
-				type="range" 
-				min="5" max="75" defaultValue="30" 
-				name="barSlider" id="barSlider" 
-				onInput={() => handleNumBarsChange()} /><br/>
-			<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
-			<input 
-				type="range" 
-				min="10" max="700" defaultValue="100" step="10"
-				name="speedSlider" id="speedSlider" onInput={() => handleSpeedChange()} /><br/>
-			<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
-		</div>
-	);
-	const barContainer = (<BarContainer numBars={numBars} barArray={barArray} />);
-	return (
-		<div id="menuBarContainer">
-			{menuBar}
-			{otherButtons}
-			{sliderContainer}
-			{barContainer}
-			<div id="test">TEST</div>
-			<button onClick={()=>swap(0,29,true)}>TESTBUTTON</button>
-		</div>
-	);
+	render() {
+		const menuBar = (
+			<ul id="menuBar">
+				<li><div onClick={()=>this.bubbleSort()}>Bubble Sort</div></li>
+				<li><div onClick={()=>this.insertionSort()}>Insertion Sort</div></li>
+				<li><div onClick={()=>this.heapSort()}>Heap Sort</div></li>
+				<li><div onClick={()=>this.quickSort()}>Quick Sort</div></li>
+				<li><div onClick={()=>this.mergeSort()}>Merge Sort</div></li>
+			</ul>
+		);
+		const otherButtons = (
+			<div id="otherButtonsContainer">
+				<div onClick={()=>this.shuffle(false)}>Shuffle</div><br/>
+				<div onClick={()=>this.shuffle(true)}>Instant Shuffle</div><br/>
+				<div onClick={()=>this.handleStop()}>Stop</div>
+			</div>
+		);
+		const sliderContainer = (
+			<div id="sliderContainer">
+				<input 
+					type="range" 
+					min="5" max="75" defaultValue="30" 
+					name="barSlider" id="barSlider" 
+					onInput={() => this.handleNumBarsChange()} /><br/>
+				<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
+				<input 
+					type="range" 
+					min="10" max="700" defaultValue="100" step="10"
+					name="speedSlider" id="speedSlider" onInput={() => this.handleSpeedChange()} /><br/>
+				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
+			</div>
+		);
+		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
+		return (
+			<div id="menuBarContainer">
+				{menuBar}
+				{otherButtons}
+				{sliderContainer}
+				{barContainer}
+			</div>
+		);
+	}
 }
 
 /* -------- SORTING ALGORITHMS -------- */
