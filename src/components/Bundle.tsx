@@ -14,6 +14,7 @@ import { makeArray, sorted } from './../utility/functions';
 
 /* -------- COMPONENTS -------- */
 import { BarContainer } from './BarContainer';
+import { Plot } from './../d3-comps/Plot';
 
 class Bundle extends React.Component {
 	public state = {
@@ -176,6 +177,7 @@ class Bundle extends React.Component {
 				{otherButtons}
 				{sliderContainer}
 				{barContainer}
+				{Plot(this.state.barArray)}
 			</div>
 		);
 	}
