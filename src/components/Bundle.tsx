@@ -37,17 +37,13 @@ class Bundle extends React.Component {
 		this.setState({speed: newSpeed});
 	}
 	handleStop() {
-		this.setState({
-			currentlyRunning: false,
-		});
+		this.setState({currentlyRunning: false,});
 		this.setColor(NORMAL);
 	}
 	reset(i:number) {
 		var arr = this.state.barArray.slice();
 		arr[i][1] = NORMAL;
-		this.setState({
-			barArray: arr,
-		});
+		this.setState({barArray: arr});
 	}
 	swap(i:number,j:number,resetLast:boolean) {
 		var arr = this.state.barArray.slice();
@@ -56,27 +52,21 @@ class Bundle extends React.Component {
 		arr[j] = temp;
 		arr[i][1] = COMPARE;
 		arr[j][1] = COMPARE;
-		this.setState({
-			barArray: arr,
-		});
+		this.setState({barArray: arr});
 		if (resetLast) setTimeout(()=>{this.reset(i); this.reset(j)}, this.state.speed);
 		else if (i !== j) setTimeout(()=>{this.reset(i)}, this.state.speed);
 	}
 	setOneBar(index:number,color:number) {
 		var arr = this.state.barArray.slice();
 		arr[index][1] = color;
-		this.setState({
-			barArray: arr,
-		});
+		this.setState({barArray: arr});
 	}
 	setColor(color:number) {
 		var arr = this.state.barArray.slice();
 		for (let i = 0; i < arr.length; i++) {
 			arr[i][1] = color;
 		}
-		this.setState({
-			barArray: arr,
-		});
+		this.setState({barArray: arr});
 	}
 	setActive(f:number,t:number,quickSort:boolean) {
 		var arr = this.state.barArray.slice();
@@ -85,9 +75,7 @@ class Bundle extends React.Component {
 			arr[k][1] = ACTIVE;
 		}
 		if (quickSort) arr[t][1] = PIVOT;
-		this.setState({
-			barArray:arr
-		});
+		this.setState({barArray:arr});
 	}
 	applyAlgorithm(algo: string) {
 		if (this.state.currentlyRunning) return;
@@ -145,9 +133,7 @@ class Bundle extends React.Component {
 			var newArr = seq[cur][0];
 			newArr[seq[cur][3]][1] = COMPARE;
 			newArr[seq[cur][4]][1] = COMPARE;
-			this.setState({
-				barArray: newArr,
-			});
+			this.setState({barArray: newArr});
 		}
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq,algo), this.state.speed);
 	}
