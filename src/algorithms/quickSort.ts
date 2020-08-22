@@ -12,13 +12,13 @@ function qSortAux(arr:number[][], l:number, r:number, sequence:number[][]) {
 			let temp = arr[i];
 			arr[i] = arr[m];
 			arr[m] = temp;
-			if (i !== m) sequence.push([i,m,l,r]);
+			sequence.push([i,m,l,r]);
 			m++;
 		}
 	}
 	arr[r] = arr[m];
 	arr[m] = splitter;
-	if (m !== r) sequence.push([m,r,l,r]);
+	sequence.push([m,r,l,r]);
 	qSortAux(arr,l,m-1,sequence);
 	qSortAux(arr,m+1,r,sequence);
 }
