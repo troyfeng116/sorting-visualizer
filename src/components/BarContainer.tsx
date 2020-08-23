@@ -17,7 +17,7 @@ function BarContainer(props: BarContainerProps) {
 			left:index*100/n+"%",
 			backgroundColor:getColor(val[1])
 		};
-      	return n <= 40? <Bar val={val[0]} style={barStyle} /> : <Bar val={""} style={barStyle} />;
+      	return n <= 0? <Bar val={val[0]} style={barStyle} /> : <Bar val={""} style={barStyle} />;
     });
 	return (
 		<div id="barContainer">

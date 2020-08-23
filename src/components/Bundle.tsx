@@ -171,13 +171,14 @@ class Bundle extends React.Component {
 			</div>
 		);
 		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
+		const testGraph = <Plot data={this.state.barArray} />;
 		return (
-			<div>
+			<div id="Bundle">
 				{menuBar}
 				{otherButtons}
 				{sliderContainer}
 				{barContainer}
-				{Plot(this.state.barArray)}
+				{testGraph}
 			</div>
 		);
 	}
