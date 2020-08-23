@@ -16,7 +16,7 @@ class Plot extends React.Component<plotProps> {
     drawChart() {
     	const data = this.props.data;
     	d3.select("svg").remove();
-    	const svg = d3.select("body").append("svg").attr("width", "37%").attr("height", "60%");
+    	const svg = d3.select("body").append("svg").attr("width", "75%").attr("height", "60%");
     	svg.selectAll("rect")
   			.data(data)
   			.enter()

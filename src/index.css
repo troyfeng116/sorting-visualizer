@@ -52,26 +52,9 @@
 	cursor:pointer;
 }
 
-#barContainer {
-	width:37%;
-	height:60%;
-	position:absolute;
-	bottom:10%;
-	left:75%;
-	transform: translate(-50%,0);
-}
-#barContainer div {
-	display:inline-block;
-	text-align:center;
-	border:1px solid white;
-	position:absolute;
-	bottom:0;
-	color:white;
-}
-
 svg {
 	position:absolute;
 	bottom:10%;
-	left:33%;
+	left:50%;
 	transform: translate(-50%,0);
 }

@@ -13,13 +13,12 @@ import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/cons
 import { makeArray, sorted } from './../utility/functions';
 
 /* -------- COMPONENTS -------- */
-import { BarContainer } from './BarContainer';
 import { Plot } from './../d3-comps/Plot';
 
 class Bundle extends React.Component {
 	public state = {
-		numBars: 30,
-		barArray: makeArray(30),
+		numBars: 50,
+		barArray: makeArray(50),
 		currentlyRunning: false,
 		speed: 100
 	}
@@ -159,10 +158,10 @@ class Bundle extends React.Component {
 			<div id="sliderContainer">
 				<input 
 					type="range" 
-					min="5" max="75" defaultValue="30" 
+					min="5" max="128" defaultValue="50" 
 					name="barSlider" id="barSlider" 
 					onInput={() => this.handleNumBarsChange()} /><br/>
-				<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 30</label><br/><br/>
+				<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 50</label><br/><br/>
 				<input 
 					type="range" 
 					min="10" max="700" defaultValue="100" step="10"
@@ -170,14 +169,12 @@ class Bundle extends React.Component {
 				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
 			</div>
 		);
-		const barContainer = (<BarContainer numBars={this.state.numBars} barArray={this.state.barArray} />);
 		const testGraph = <Plot data={this.state.barArray} />;
 		return (
 			<div id="Bundle">
 				{menuBar}
 				{otherButtons}
 				{sliderContainer}
-				{barContainer}
 				{testGraph}
 			</div>
 		);
