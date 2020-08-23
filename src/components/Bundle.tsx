@@ -14,6 +14,7 @@ import { makeArray, sorted } from './../utility/functions';
 
 /* -------- COMPONENTS -------- */
 import { Bar } from './Bar';
+import { Plot } from './Plot';
 
 class Bundle extends React.Component {
 	public state = {
@@ -170,12 +171,14 @@ class Bundle extends React.Component {
 			</div>
 		);
 		const bars = <Bar data={this.state.barArray} />;
+		const graph = <Plot data={this.state.barArray} />;
 		return (
 			<div id="Bundle">
 				{menuBar}
 				{otherButtons}
 				{sliderContainer}
 				{bars}
+				{graph}
 			</div>
 		);
 	}
