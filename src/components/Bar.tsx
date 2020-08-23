@@ -2,11 +2,11 @@ import React from 'react';
 import * as d3 from 'd3';
 import { getColor } from './../utility/functions';
 
-type plotProps = {
+type barProps = {
 	data:any[][],
 }
 
-class Plot extends React.Component<plotProps> {
+class Bar extends React.Component<barProps> {
     componentDidMount() {
     	this.drawChart();
     }
@@ -32,4 +32,4 @@ class Plot extends React.Component<plotProps> {
     }
 }
 
-export { Plot };
+export { Bar };

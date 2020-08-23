@@ -13,7 +13,7 @@ import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/cons
 import { makeArray, sorted } from './../utility/functions';
 
 /* -------- COMPONENTS -------- */
-import { Plot } from './../d3-comps/Plot';
+import { Bar } from './Bar';
 
 class Bundle extends React.Component {
 	public state = {
@@ -169,7 +169,7 @@ class Bundle extends React.Component {
 				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
 			</div>
 		);
-		const testGraph = <Plot data={this.state.barArray} />;
+		const testGraph = <Bar data={this.state.barArray} />;
 		return (
 			<div id="Bundle">
 				{menuBar}
