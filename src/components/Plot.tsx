@@ -9,7 +9,7 @@ const Plot = (props: {data: any[][]}) => {
 		d3.select("#chart").remove();
 		const numPoints = 130;
 		const maxRuntime = 5000;
-		const height = 300;
+		const height = 400;
 		const width = 400;
 		var svg = d3.select("body").append("svg").attr("width",width).attr("height",height).attr("id","chart");
 		svg.selectAll("circle")
@@ -39,6 +39,18 @@ const Plot = (props: {data: any[][]}) => {
 		svg.append("g")
 			.attr("transform", "translate(50,"+(height*.8+10)+")")
 			.call(xAxis);
+		svg.append("text")
+			.attr("class", "x label")
+			.attr("text-anchor", "end")
+    		.attr("x", width)
+    		.attr("y",height-10)
+    		.text("# bars");
+    	svg.append("text")
+    		.attr("class", "y label")
+			.attr("text-anchor", "end")
+			.attr("y",10)
+    		.attr("transform", "rotate(-90)")
+    		.text("# compares");
 	}
 	return <div></div>;
 };
