@@ -60,8 +60,8 @@
 }
 #chart {
 	position:absolute;
-	top:150%;
-	left:50%;
-	transform: translate(-50%,0);
+	top:110%;
+	right:50%;
+	transform: translate(50%,0);
 	padding:10%;
 }
