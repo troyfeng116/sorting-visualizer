@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+import { getAlgoColor } from './../utility/functions'
 
 const Plot = (props: {data: any[][]}) => {
 	useEffect(() => drawChart());
@@ -20,7 +21,7 @@ const Plot = (props: {data: any[][]}) => {
 			.attr("cy", (d) => (height*.8- d[1]/maxRuntime*(height*.8)))
 			.attr("transform", "translate(50,10)")
 			.attr("r", 4)
-			.attr("fill", (d) => getColor(d[2]))
+			.attr("fill", (d) => getAlgoColor(d[2]))
 			.append("svg:title")
    				.text((d) => d[2] + ": (" + d[0] + "," + d[1] + ")");
    		/* Axes */
@@ -41,17 +42,5 @@ const Plot = (props: {data: any[][]}) => {
 	}
 	return <div></div>;
 };
-
-export function getColor(algo:string) {
-	switch (algo) {
-		case 'bSort': return "rgb(255,0,0)";
-		case 'iSort': return "rgb(0,220,0)";
-		case 'hSort': return "rgb(0,0,220)";
-		case 'qSort': return "rgb(220,100,0)";
-		case 'mSort': return "rgb(220,0,220)";
-		case 'shuffle': return "rgb(15,15,15)";
-	}
-	return "black";
-}
 
 export { Plot };

@@ -18,3 +18,15 @@ export function sorted(arr:number[][]) {
 	}
 	return true;
 }
+
+export function getAlgoColor(algo:string) {
+	switch (algo) {
+		case 'bSort': return "rgb(255,0,0)";
+		case 'iSort': return "rgb(0,220,0)";
+		case 'hSort': return "rgb(0,150,255)";
+		case 'qSort': return "rgb(255,120,0)";
+		case 'mSort': return "rgb(220,0,220)";
+		case 'shuffle': return "rgb(15,15,15)";
+	}
+	return "black";
+}

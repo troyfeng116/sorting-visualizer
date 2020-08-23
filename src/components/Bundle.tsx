@@ -10,7 +10,7 @@ import { fisher_yeats } from './../algorithms/shuffle';
 
 /* -------- CONSTANTS & UTILITIES -------- */
 import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/constants';
-import { makeArray, sorted } from './../utility/functions';
+import { makeArray, sorted, getAlgoColor } from './../utility/functions';
 
 /* -------- COMPONENTS -------- */
 import { Bar } from './Bar';
@@ -116,20 +116,23 @@ class Bundle extends React.Component {
 		var newRuntimes = this.state.runtimes.slice();
 		newRuntimes.push([this.state.numBars, numMoves, algo]);
 		this.setState({runtimes: newRuntimes});
-		(document.getElementById(algo) as HTMLDivElement).className = "currentlyRunning";
+		(document.getElementById(algo) as HTMLDivElement).style.backgroundColor = getAlgoColor(algo);
+		(document.getElementById(algo) as HTMLDivElement).style.color = "white";
 		this.setState({currentlyRunning: true});
 		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq,algo),DELAY);
 	}
 	handleSequenceLoop(cur:number,upTo:number,seq:any[][],algo:string) {
 		if (!this.state.currentlyRunning) {
-			(document.getElementById(algo) as HTMLDivElement).className = "";
+			(document.getElementById(algo) as HTMLDivElement).style.backgroundColor = "";
+			(document.getElementById(algo) as HTMLDivElement).style.color = "";
 			return;
 		}
 		if (cur >= upTo) {
 			this.setState({currentlyRunning: false});
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), this.state.speed);
 			else setTimeout(()=>this.setColor(NORMAL), this.state.speed);
-			(document.getElementById(algo) as HTMLDivElement).className = "";
+			(document.getElementById(algo) as HTMLDivElement).style.backgroundColor = "";
+			(document.getElementById(algo) as HTMLDivElement).style.color = "";
 			return;
 		}
 		if (seq[cur].length === 2) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { getColor } from './Plot';
+import { getAlgoColor } from './../utility/functions';
 
 const Legend = () => {
 	d3.select("#legend").remove();
@@ -15,7 +15,7 @@ const Legend = () => {
 }
 
 function createLegendEntry(svg:d3.Selection<SVGSVGElement,unknown,HTMLElement,any>, h:number, algo:string) {
-	svg.append("circle").attr("cx",10).attr("cy",h).attr("r", 6).style("fill", getColor(algo));
+	svg.append("circle").attr("cx",10).attr("cy",h).attr("r", 6).style("fill", getAlgoColor(algo));
 	svg.append("text").attr("x", 20).attr("y", h).text(algo).attr("alignment-baseline","middle");
 }
 
