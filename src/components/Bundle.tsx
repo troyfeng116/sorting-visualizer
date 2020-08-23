@@ -169,13 +169,13 @@ class Bundle extends React.Component {
 				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
 			</div>
 		);
-		const testGraph = <Bar data={this.state.barArray} />;
+		const bars = <Bar data={this.state.barArray} />;
 		return (
 			<div id="Bundle">
 				{menuBar}
 				{otherButtons}
 				{sliderContainer}
-				{testGraph}
+				{bars}
 			</div>
 		);
 	}
