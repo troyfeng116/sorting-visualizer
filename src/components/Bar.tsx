@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { getColor } from './../utility/functions';
 
@@ -6,15 +6,10 @@ type barProps = {
 	data:any[][],
 }
 
-class Bar extends React.Component<barProps> {
-    componentDidMount() {
-    	this.drawChart();
-    }
-    componentDidUpdate() {
-    	this.drawChart();
-    }
-    drawChart() {
-    	const data = this.props.data;
+function Bar(props:barProps) {
+    useEffect(() => drawChart());
+    function drawChart() {
+    	const data = props.data;
     	d3.select("svg").remove();
     	const svg = d3.select("body").append("svg").attr("width", "75%").attr("height", "60%");
     	svg.selectAll("rect")
@@ -27,9 +22,7 @@ class Bar extends React.Component<barProps> {
   			.attr("height", (d, i) => 100/data.length*d[0]+"%")
   			.attr("fill", (d, i) => getColor(d[1]));
     }
-    render() {
-    	return <div></div>;
-    }
+    return <div></div>;
 }
 
 export { Bar };
