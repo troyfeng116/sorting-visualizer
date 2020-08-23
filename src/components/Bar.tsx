@@ -6,8 +6,8 @@ function Bar(props: {data:any[][]}) {
     useEffect(() => drawChart());
     function drawChart() {
     	const data = props.data;
-    	d3.select("svg").remove();
-    	const svg = d3.select("Body").append("svg").attr("width", "75%").attr("height", "60%").attr("id","barContainer");
+    	d3.select("#barContainer").remove();
+    	const svg = d3.select("Body").append("svg").attr("width", "50%").attr("height", "60%").attr("id","barContainer");
     	svg.selectAll("rect")
   			.data(data)
   			.enter()

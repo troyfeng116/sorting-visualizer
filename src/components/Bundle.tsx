@@ -15,6 +15,7 @@ import { makeArray, sorted } from './../utility/functions';
 /* -------- COMPONENTS -------- */
 import { Bar } from './Bar';
 import { Plot } from './Plot';
+import { Legend } from './Legend';
 
 type BundleState = {
 	numBars:number,
@@ -52,6 +53,7 @@ class Bundle extends React.Component {
 	}
 	reset(i:number) {
 		var arr = this.state.barArray.slice();
+		if (i >= arr.length) return;
 		arr[i][1] = NORMAL;
 		this.setState({barArray: arr});
 	}
@@ -111,6 +113,9 @@ class Bundle extends React.Component {
 	}
 	handleSequence(seq:number[][], algo:string) {
 		var numMoves = seq.length;
+		var newRuntimes = this.state.runtimes.slice();
+		newRuntimes.push([this.state.numBars, numMoves, algo]);
+		this.setState({runtimes: newRuntimes});
 		(document.getElementById(algo) as HTMLDivElement).className = "currentlyRunning";
 		this.setState({currentlyRunning: true});
 		setTimeout(()=>this.handleSequenceLoop(0,numMoves,seq,algo),DELAY);
@@ -125,9 +130,6 @@ class Bundle extends React.Component {
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), this.state.speed);
 			else setTimeout(()=>this.setColor(NORMAL), this.state.speed);
 			(document.getElementById(algo) as HTMLDivElement).className = "";
-			var newRuntimes = this.state.runtimes.slice();
-			newRuntimes.push([this.state.numBars, upTo, algo]);
-			this.setState({runtimes: newRuntimes});
 			return;
 		}
 		if (seq[cur].length === 2) {
@@ -184,6 +186,7 @@ class Bundle extends React.Component {
 		);
 		const bars = <Bar data={this.state.barArray} />;
 		const graph = <Plot data={this.state.runtimes} />;
+		const legend = <Legend />;
 		return (
 			<div id="Bundle">
 				{menuBar}
@@ -191,6 +194,7 @@ class Bundle extends React.Component {
 				{sliderContainer}
 				{bars}
 				{graph}
+				{legend}
 			</div>
 		);
 	}
