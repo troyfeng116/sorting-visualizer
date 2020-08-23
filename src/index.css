@@ -58,3 +58,10 @@
 	left:50%;
 	transform: translate(-50%,0);
 }
+#chart {
+	position:absolute;
+	top:150%;
+	left:50%;
+	transform: translate(-50%,0);
+	padding:10%;
+}

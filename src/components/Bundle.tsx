@@ -16,12 +16,21 @@ import { makeArray, sorted } from './../utility/functions';
 import { Bar } from './Bar';
 import { Plot } from './Plot';
 
+type BundleState = {
+	numBars:number,
+	barArray:number[][],
+	currentlyRunning:boolean,
+	speed:number,
+	runtimes:any[]
+}
+
 class Bundle extends React.Component {
-	public state = {
+	public state:BundleState = {
 		numBars: 50,
 		barArray: makeArray(50),
 		currentlyRunning: false,
-		speed: 100
+		speed: 100,
+		runtimes: []
 	}
 	handleNumBarsChange() {
 		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
@@ -116,6 +125,9 @@ class Bundle extends React.Component {
 			if (sorted(this.state.barArray)) setTimeout(()=>this.setColor(SORTED), this.state.speed);
 			else setTimeout(()=>this.setColor(NORMAL), this.state.speed);
 			(document.getElementById(algo) as HTMLDivElement).className = "";
+			var newRuntimes = this.state.runtimes.slice();
+			newRuntimes.push([this.state.numBars, upTo, algo]);
+			this.setState({runtimes: newRuntimes});
 			return;
 		}
 		if (seq[cur].length === 2) {
@@ -171,7 +183,7 @@ class Bundle extends React.Component {
 			</div>
 		);
 		const bars = <Bar data={this.state.barArray} />;
-		const graph = <Plot data={this.state.barArray} />;
+		const graph = <Plot data={this.state.runtimes} />;
 		return (
 			<div id="Bundle">
 				{menuBar}
