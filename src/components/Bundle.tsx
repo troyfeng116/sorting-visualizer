@@ -1,18 +1,13 @@
 import React from 'react';
 
 /* -------- ALGORITHMS -------- */
-import { mSort } from './../algorithms/mergeSort';
-import { qSort } from './../algorithms/quickSort';
-import { bSort } from './../algorithms/bubbleSort';
-import { iSort } from './../algorithms/insertionSort';
-import { hSort } from './../algorithms/heapSort';
 import { fisher_yeats } from './../algorithms/shuffle';
-import { generateSample } from './../algorithms/sample'
+import { generateSample } from './../algorithms/sample';
 
 /* -------- CONSTANTS & UTILITIES -------- */
 import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/constants';
+import { algoStrings, algoFunctions, algoFullNames, algoTable } from './../utility/constants';
 import { makeArray, sorted, getAlgoColor } from './../utility/functions';
-
 /* -------- COMPONENTS -------- */
 import { Bar } from './Bar';
 import { Plot } from './Plot';
@@ -104,13 +99,7 @@ class Bundle extends React.Component {
 			this.setColor(SORTED);
 			return;
 		}
-		switch(algo) {
-			case 'bSort': this.handleSequence(bSort(arr), algo); break;
-			case 'iSort': this.handleSequence(iSort(arr), algo); break;
-			case 'hSort': this.handleSequence(hSort(arr), algo); break;
-			case 'qSort': this.handleSequence(qSort(arr), algo); break;
-			case 'mSort': this.handleSequence(mSort(arr), algo); break;
-		}
+		this.handleSequence(algoFunctions[algoTable.get(algo)](arr),algo);
 	}
 	handleSequence(seq:number[][], algo:string) {
 		var numMoves = seq.length;
@@ -166,24 +155,19 @@ class Bundle extends React.Component {
 		this.setState({runtimes:[]});
 	}
 	render() {
-		const menuBar = (
-			<ul id="menuBar">
-				<li><div id='bSort' onClick={()=>this.applyAlgorithm('bSort')}>Bubble Sort</div></li>
-				<li><div id='iSort' onClick={()=>this.applyAlgorithm('iSort')}>Insertion Sort</div></li>
-				<li><div id='hSort' onClick={()=>this.applyAlgorithm('hSort')}>Heap Sort</div></li>
-				<li><div id='qSort' onClick={()=>this.applyAlgorithm('qSort')}>Quick Sort</div></li>
-				<li><div id='mSort' onClick={()=>this.applyAlgorithm('mSort')}>Merge Sort</div></li>
-			</ul>
-		);
-		const sampleBar = (
-			<ul id="sampleBar">
-				<li><div onClick={()=>this.getSample('bSort')}>Sample</div></li>
-				<li><div onClick={()=>this.getSample('iSort')}>Sample</div></li>
-				<li><div onClick={()=>this.getSample('hSort')}>Sample</div></li>
-				<li><div onClick={()=>this.getSample('qSort')}>Sample</div></li>
-				<li><div onClick={()=>this.getSample('mSort')}>Sample</div></li>
-			</ul>
-		)
+		const algoList = algoStrings.map((value,index) => {
+			return index < 5 ? (
+				<li>
+					<div id={value} onClick={()=>this.applyAlgorithm(value)}>
+						{algoFullNames[index]}
+					</div>
+				</li>) : null;
+		});
+		const menuBar = <ul id="menuBar">{algoList}</ul>;
+		const sampleList = algoStrings.map((value,index) => {
+			return index < 5 ? <li><div onClick={()=>this.getSample(value)}>Sample</div></li> : null;
+		})
+		const sampleBar = <ul id="sampleBar">{sampleList}</ul>;
 		const otherButtons = (
 			<div id="otherButtonsContainer">
 				<div id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>

@@ -1,17 +1,11 @@
-import { bSort } from './bubbleSort';
-import { iSort } from './insertionSort';
-import { hSort } from './heapSort';
-import { qSort } from './quickSort';
-import { mSort } from './mergeSort';
-import { fisher_yeats } from './shuffle';
+import { algoStrings, algoFunctions, algoTable } from './../utility/constants';
 import { makeArray } from './../utility/functions';
+import { fisher_yeats } from './shuffle';
 
-const algoStrings = ['bSort', 'iSort', 'hSort', 'qSort', 'mSort', 'shuffle'];
-const algorithms = [bSort, iSort, hSort, qSort, mSort, fisher_yeats];
 export function generateSample(algo:string) {
 	var results:any[][] = [];
-	var index = algoStrings.indexOf(algo);
-	if (index >= 0) {
+	var index = algoTable.get(algo);
+	if (index !== undefined) {
 		let seq = oneAlgoSample(algo, 5, 128, 5);
 		seq.forEach((point) => results.push(point));
 	}
@@ -29,7 +23,7 @@ function oneAlgoSample(algo:string, min:number, max:number, step:number) {
 	for (let n = min; n <= max; n+=step) {
 		var arr = makeArray(n);
 		fisher_yeats(arr);
-		var newSeq = algorithms[algoStrings.indexOf(algo)](arr);
+		var newSeq = algoFunctions[algoTable.get(algo)](arr);
 		results.push([n, newSeq.length, algo]);
 	}
 	return results;
