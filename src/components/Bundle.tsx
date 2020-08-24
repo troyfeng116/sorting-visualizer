@@ -7,6 +7,7 @@ import { bSort } from './../algorithms/bubbleSort';
 import { iSort } from './../algorithms/insertionSort';
 import { hSort } from './../algorithms/heapSort';
 import { fisher_yeats } from './../algorithms/shuffle';
+import { generateSample } from './../algorithms/sample'
 
 /* -------- CONSTANTS & UTILITIES -------- */
 import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/constants';
@@ -155,6 +156,12 @@ class Bundle extends React.Component {
 		}
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq,algo), this.state.speed);
 	}
+	getSample() {
+		var arr = this.state.runtimes;
+		var toAppend = generateSample();
+		toAppend.forEach((point) => arr.push(point));
+		this.setState({runtimes: arr});
+	}
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
@@ -189,7 +196,7 @@ class Bundle extends React.Component {
 		);
 		const bars = <Bar data={this.state.barArray} />;
 		const graph = <Plot data={this.state.runtimes} />;
-		const legend = <Legend />;
+		const legend = <div><Legend /><div id="sampleButton" onClick={() => this.getSample()}>Sample</div></div>;
 		return (
 			<div id="Bundle">
 				{menuBar}

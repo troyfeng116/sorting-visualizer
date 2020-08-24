@@ -72,3 +72,17 @@
 	display:inline-block;
 	border: 1px solid;
 }
+#sampleButton {
+	position:absolute;
+	top:75%;
+	left:57%;
+	transform: translate(0,-50%);
+	display:inline-block;
+	border: 1px solid;
+	padding:10px;
+}
+#sampleButton:hover {
+	background-color:rgb(60,60,120);
+	color:white;
+	cursor:pointer;
+}
