@@ -1,4 +1,4 @@
-#menuBar {
+#menuBar, #sampleBar {
 	list-style:none;
 	margin:0;
 	padding:0;
@@ -6,7 +6,16 @@
 	width:75vw;
 	text-align:center;
 }
+#sampleBar {
+	position:absolute;
+	top:4vw;
+	font-size:1.1vw;
+	width:75vw;
+}
 #menuBar li {
+	display:inline-block;
+}
+#sampleBar li {
 	display:inline-block;
 }
 #menuBar li div {
@@ -15,7 +24,18 @@
 	margin:1vw;
 	width:10vw;
 }
+#sampleBar li div {
+	border:1px solid black;
+	padding:0.5vw;
+	margin:3vw;
+	width:7vw;
+}
 #menuBar li div:hover {
+	background-color:rgb(60,60,120);
+	color:white;
+	cursor:pointer;
+}
+#sampleBar li div:hover {
 	background-color:rgb(60,60,120);
 	color:white;
 	cursor:pointer;
@@ -72,16 +92,20 @@
 	display:inline-block;
 	border: 1px solid;
 }
-#sampleButton {
+#legendContainer #sampleButton,#resetButton {
 	position:absolute;
-	top:75%;
 	left:57%;
 	transform: translate(0,-50%);
-	display:inline-block;
-	border: 1px solid;
 	padding:10px;
+	border:1px solid;
 }
-#sampleButton:hover {
+#legendContainer #sampleButton {
+	top:75%;
+}
+#legendContainer #resetButton {
+	top:85%;
+}
+#legendContainer div:hover {
 	background-color:rgb(60,60,120);
 	color:white;
 	cursor:pointer;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import * as d3 from 'd3';
 import { getAlgoColor } from './../utility/functions'
 
@@ -52,7 +52,7 @@ const Plot = (props: {data: any[][]}) => {
     		.attr("transform", "rotate(-90)")
     		.text("# compares");
 	}
-	return <div></div>;
+	return null;
 };
 
 export { Plot };

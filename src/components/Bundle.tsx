@@ -162,6 +162,9 @@ class Bundle extends React.Component {
 		toAppend.forEach((point) => arr.push(point));
 		this.setState({runtimes: arr});
 	}
+	resetRuntimes() {
+		this.setState({runtimes:[]});
+	}
 	render() {
 		const menuBar = (
 			<ul id="menuBar">
@@ -172,6 +175,15 @@ class Bundle extends React.Component {
 				<li><div id='mSort' onClick={()=>this.applyAlgorithm('mSort')}>Merge Sort</div></li>
 			</ul>
 		);
+		const sampleBar = (
+			<ul id="sampleBar">
+				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+			</ul>
+		)
 		const otherButtons = (
 			<div id="otherButtonsContainer">
 				<div id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
@@ -196,10 +208,15 @@ class Bundle extends React.Component {
 		);
 		const bars = <Bar data={this.state.barArray} />;
 		const graph = <Plot data={this.state.runtimes} />;
-		const legend = <div><Legend /><div id="sampleButton" onClick={() => this.getSample()}>Sample</div></div>;
+		const legend = <div id="legendContainer">
+			<Legend />
+			<div id="sampleButton" onClick={() => this.getSample()}>Sample</div>
+			<div id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
+		</div>;
 		return (
 			<div id="Bundle">
 				{menuBar}
+				{sampleBar}
 				{otherButtons}
 				{sliderContainer}
 				{bars}
