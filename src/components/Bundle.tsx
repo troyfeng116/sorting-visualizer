@@ -1,7 +1,7 @@
 import React from 'react';
 
 /* -------- ALGORITHMS -------- */
-import { fisher_yeats } from './../algorithms/shuffle';
+import { fisher_yates } from './../algorithms/shuffle';
 import { generateSample } from './../algorithms/sample';
 
 /* -------- CONSTANTS & UTILITIES -------- */
@@ -86,7 +86,7 @@ class Bundle extends React.Component {
 		var arr = this.state.barArray.slice();
 		if (algo === 'instantShuffle' || algo === 'shuffle') {
 			this.setColor(NORMAL);
-			var seq = fisher_yeats(arr);
+			var seq = fisher_yates(arr);
 			if (algo === 'shuffle') this.handleSequence(seq, 'shuffle');
 			else this.setState({barArray:arr});
 			return;
@@ -142,13 +142,14 @@ class Bundle extends React.Component {
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq,algo), this.state.speed);
 	}
 	getSample(algo:string) {
+		if (this.state.currentlyRunning) return;
 		var arr = this.state.runtimes;
 		var toAppend = generateSample(algo);
 		toAppend.forEach((point) => arr.push(point));
 		this.setState({runtimes: arr});
 	}
 	resetRuntimes() {
-		this.setState({runtimes:[]});
+		if (!this.state.currentlyRunning) this.setState({runtimes:[]});
 	}
 	render() {
 		const algoList = algoStrings.map((value,index) => {

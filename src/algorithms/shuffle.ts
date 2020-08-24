@@ -1,4 +1,4 @@
-export function fisher_yeats(arr:number[][]) {
+export function fisher_yates(arr:number[][]) {
 	var sequence = [];
 	for (let i = arr.length-1; i > 0; i--) {
 		var j = Math.floor(Math.random() * (i+1));
