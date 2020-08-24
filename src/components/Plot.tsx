@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { getAlgoColor } from './../utility/functions'
 
-const Plot = (props: {data: any[][]}) => {
-	useEffect(() => drawChart());
+const Plot = React.memo((props: {data: any[][]}) => {
+	useEffect(() => drawChart()/*, [data]*/);
 	function drawChart() {
 		const dataset = props.data;
 		d3.select("#chart").remove();
@@ -53,6 +53,6 @@ const Plot = (props: {data: any[][]}) => {
     		.text("# compares");
 	}
 	return null;
-};
+});
 
 export { Plot };

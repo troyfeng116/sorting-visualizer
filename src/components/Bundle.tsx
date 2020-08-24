@@ -143,7 +143,7 @@ class Bundle extends React.Component {
 	}
 	getSample(algo:string) {
 		if (this.state.currentlyRunning) return;
-		var arr = this.state.runtimes;
+		var arr = this.state.runtimes.slice();
 		var toAppend = generateSample(algo);
 		toAppend.forEach((point) => arr.push(point));
 		this.setState({runtimes: arr});
