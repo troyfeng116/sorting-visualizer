@@ -156,9 +156,9 @@ class Bundle extends React.Component {
 		}
 		setTimeout(()=>this.handleSequenceLoop(cur+1,upTo,seq,algo), this.state.speed);
 	}
-	getSample() {
+	getSample(algo:string) {
 		var arr = this.state.runtimes;
-		var toAppend = generateSample();
+		var toAppend = generateSample(algo);
 		toAppend.forEach((point) => arr.push(point));
 		this.setState({runtimes: arr});
 	}
@@ -177,11 +177,11 @@ class Bundle extends React.Component {
 		);
 		const sampleBar = (
 			<ul id="sampleBar">
-				<li><div onClick={()=>this.getSample()}>Sample</div></li>
-				<li><div onClick={()=>this.getSample()}>Sample</div></li>
-				<li><div onClick={()=>this.getSample()}>Sample</div></li>
-				<li><div onClick={()=>this.getSample()}>Sample</div></li>
-				<li><div onClick={()=>this.getSample()}>Sample</div></li>
+				<li><div onClick={()=>this.getSample('bSort')}>Sample</div></li>
+				<li><div onClick={()=>this.getSample('iSort')}>Sample</div></li>
+				<li><div onClick={()=>this.getSample('hSort')}>Sample</div></li>
+				<li><div onClick={()=>this.getSample('qSort')}>Sample</div></li>
+				<li><div onClick={()=>this.getSample('mSort')}>Sample</div></li>
 			</ul>
 		)
 		const otherButtons = (
@@ -210,7 +210,7 @@ class Bundle extends React.Component {
 		const graph = <Plot data={this.state.runtimes} />;
 		const legend = <div id="legendContainer">
 			<Legend />
-			<div id="sampleButton" onClick={() => this.getSample()}>Sample</div>
+			<div id="sampleButton" onClick={() => this.getSample('all')}>Sample</div>
 			<div id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
 		</div>;
 		return (
