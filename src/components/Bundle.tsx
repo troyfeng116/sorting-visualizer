@@ -71,17 +71,13 @@ class Bundle extends React.Component {
 	}
 	setColor(color:number) {
 		var arr = this.state.barArray.slice();
-		for (let i = 0; i < arr.length; i++) {
-			arr[i][1] = color;
-		}
+		for (let i = 0; i < arr.length; i++) arr[i][1] = color;
 		this.setState({barArray: arr});
 	}
 	setActive(f:number,t:number,quickSort:boolean) {
 		var arr = this.state.barArray.slice();
 		for (let k = 0; k < arr.length; k++) arr[k][1] = NORMAL;
-		for (let k = f; k <= t; k++) {
-			arr[k][1] = ACTIVE;
-		}
+		for (let k = f; k <= t; k++) arr[k][1] = ACTIVE;
 		if (quickSort) arr[t][1] = PIVOT;
 		this.setState({barArray:arr});
 	}
