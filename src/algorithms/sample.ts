@@ -6,7 +6,7 @@ export function generateSample(algo:string) {
 	var results:any[][] = [];
 	var index = algoTable.get(algo);
 	if (index !== undefined) {
-		let seq = oneAlgoSample(algo, 5, 128, 5);
+		let seq = oneAlgoSample(algo, 5, 128, -1);
 		seq.forEach((point) => results.push(point));
 	}
 	else {
@@ -20,7 +20,7 @@ export function generateSample(algo:string) {
 
 function oneAlgoSample(algo:string, min:number, max:number, step:number) {
 	var results:any[][] = [];
-	for (let n = min; n <= max; n+=step) {
+	for (let n = min; n <= max; n += step<0? Math.floor(Math.random()*5)+3 : step) {
 		var arr = makeArray(n);
 		fisher_yates(arr);
 		var newSeq = algoFunctions[algoTable.get(algo)](arr);
