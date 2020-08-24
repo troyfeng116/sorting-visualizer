@@ -8,7 +8,7 @@
 }
 #sampleBar {
 	position:absolute;
-	top:4vw;
+	top:6vw;
 	font-size:1.1vw;
 	width:75vw;
 }
@@ -27,7 +27,8 @@
 #sampleBar li div {
 	border:1px solid black;
 	padding:0.5vw;
-	margin:3vw;
+	margin-left:3vw;
+	margin-right:3vw;
 	width:7vw;
 }
 #menuBar li div:hover {
