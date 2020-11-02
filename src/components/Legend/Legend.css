@@ -1,0 +1,26 @@
+#legend {
+    position:absolute;
+    top:60%;
+    left:57%;
+    transform: translate(0,-50%);
+    display:inline-block;
+    border: 1px solid;
+}
+#legendContainer #sampleButton,#resetButton {
+    position:absolute;
+    left:57%;
+    transform: translate(0,-50%);
+    padding:10px;
+    border:1px solid;
+}
+#legendContainer #sampleButton {
+    top:75%;
+}
+#legendContainer #resetButton {
+    top:85%;
+}
+#legendContainer div:hover {
+    background-color:rgb(60,60,120);
+    color:white;
+    cursor:pointer;
+}

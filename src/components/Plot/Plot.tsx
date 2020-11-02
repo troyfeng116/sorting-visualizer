@@ -1,6 +1,7 @@
+import './Plot.css'
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-import { getAlgoColor } from './../utility/functions'
+import { getAlgoColor } from '../../utility/functions'
 
 const Plot = React.memo((props: {data: any[][]}) => {
 	useEffect(() => drawChart()/*, [data]*/);
@@ -52,7 +53,7 @@ const Plot = React.memo((props: {data: any[][]}) => {
     		.attr("transform", "rotate(-90)")
     		.text("# compares");
 	}
-	return null;
+	return <></>;
 });
 
 export { Plot };

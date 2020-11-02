@@ -1,6 +1,7 @@
+import './Bar.css'
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-import { getColor } from './../utility/functions';
+import { getColor } from '../../utility/functions';
 
 function Bar(props: {data:any[][]}) {
     useEffect(() => drawChart());
@@ -18,7 +19,7 @@ function Bar(props: {data:any[][]}) {
   			.attr("height", (d, i) => 100/data.length*d[0]+"%")
   			.attr("fill", (d, i) => getColor(d[1]));
     }
-    return <div></div>;
+    return <></>;
 }
 
 export { Bar };

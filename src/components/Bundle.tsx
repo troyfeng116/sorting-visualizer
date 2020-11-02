@@ -9,9 +9,9 @@ import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/cons
 import { algoStrings, algoFunctions, algoFullNames, algoTable } from './../utility/constants';
 import { makeArray, sorted, getAlgoColor } from './../utility/functions';
 /* -------- COMPONENTS -------- */
-import { Bar } from './Bar';
-import { Plot } from './Plot';
-import { Legend } from './Legend';
+import { Bar } from './Bar/Bar';
+import { Plot } from './Plot/Plot';
+import { Legend } from './Legend/Legend';
 
 type BundleState = {
 	numBars:number,

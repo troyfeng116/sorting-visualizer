@@ -1,6 +1,7 @@
+import './Legend.css'
 import React from 'react';
 import * as d3 from 'd3';
-import { getAlgoColor } from './../utility/functions';
+import { getAlgoColor } from '../../utility/functions';
 
 const Legend = () => {
 	d3.select("#legend").remove();
