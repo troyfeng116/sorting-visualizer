@@ -8,6 +8,7 @@ import { generateSample } from './../algorithms/sample';
 import { NORMAL, ACTIVE, COMPARE, PIVOT, SORTED, DELAY } from './../utility/constants';
 import { algoStrings, algoFunctions, algoFullNames, algoTable } from './../utility/constants';
 import { makeArray, sorted, getAlgoColor } from './../utility/functions';
+
 /* -------- COMPONENTS -------- */
 import { Bar } from './Bar/Bar';
 import { Plot } from './Plot/Plot';
@@ -152,19 +153,20 @@ class Bundle extends React.Component {
 		if (!this.state.currentlyRunning) this.setState({runtimes:[]});
 	}
 	render() {
-		const algoList = algoStrings.map((value,index) => {
-			return index < 5 ? (
-				<li>
-					<div id={value} onClick={()=>this.applyAlgorithm(value)}>
-						{algoFullNames[index]}
+		const menuButtons = new Array(5);
+		for (let i = 0; i < 5; i++) {
+			menuButtons[i] = (
+				<div className='menubar-cell'>
+					<div className='menubar-cell-top' id={algoStrings[i]} onClick={()=>this.applyAlgorithm(algoStrings[i])}>
+						{algoFullNames[i]}
 					</div>
-				</li>) : null;
-		});
-		const menuBar = <ul id="menuBar">{algoList}</ul>;
-		const sampleList = algoStrings.map((value,index) => {
-			return index < 5 ? <li><div onClick={()=>this.getSample(value)}>Sample</div></li> : null;
-		})
-		const sampleBar = <ul id="sampleBar">{sampleList}</ul>;
+					<div className='menubar-cell-bottom' onClick={()=>this.getSample(algoStrings[i])}>
+						Sample
+					</div>
+				</div>
+			)
+		}
+		const menuBar = <div id="menuBar">{menuButtons}</div>;
 		const otherButtons = (
 			<div id="otherButtonsContainer">
 				<div id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
@@ -197,7 +199,6 @@ class Bundle extends React.Component {
 		return (
 			<div id="Bundle">
 				{menuBar}
-				{sampleBar}
 				{otherButtons}
 				{sliderContainer}
 				{bars}

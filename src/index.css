@@ -6,6 +6,42 @@
 	width:75vw;
 	text-align:center;
 }
+#menuBar {
+	display: flex;
+}
+
+.menubar-cell {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.menubar-cell-top {
+	padding: 20px;
+	border: 1px solid black;
+	margin: 10px;
+	transition: all 0.23s ease;
+}
+
+.menubar-cell-top:hover {
+	background-color: rgb(60,60,120);
+	color: white;
+	cursor: pointer;
+}
+
+.menubar-cell-bottom {
+	padding: 10px 20px;
+	border: 1px solid black;
+	margin-top: 10px;
+	transition: all 0.23s ease;
+}
+
+.menubar-cell-bottom:hover {
+	background-color: rgb(60,60,120);
+	color: white;
+	cursor: pointer;
+}
+
 #sampleBar {
 	position:absolute;
 	top:6vw;
