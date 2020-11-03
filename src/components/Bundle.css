@@ -26,12 +26,13 @@
 }
 
 .menubar-cell-top {
-    border: 1px solid;
     transition: all 0.23s ease;
     flex: 1;
     padding: 15px 0;
     width: 100%;
     font-size: 20px;
+    box-shadow: 3px 3px 5px rgba(60,60,120,0.5);
+    border-radius: 12px;
 }
 
 .menubar-cell-top:hover {
@@ -42,10 +43,11 @@
 
 .menubar-cell-bottom {
     padding: 10px 20px;
-    border: 1px solid;
     margin-top: 20px;
     transition: all 0.23s ease;
     font-size: 16px;
+    box-shadow: 2px 2px 4px rgba(60,60,120,0.5);
+    border-radius: 8px;
 }
 
 .menubar-cell-bottom:hover {
@@ -56,7 +58,7 @@
 
 #sliderContainer {
     flex: 1;
-    border: 1px solid;
+    box-shadow: 3px 3px 5px rgba(60,60,120,0.5);
     padding: 20px;
 }
 
@@ -70,12 +72,13 @@
 
 .other-button {
     padding: 10px;
-    border: 1px solid;
     max-width: 200px;
     min-width: 150px;
     text-align: center;
     font-size: 16px;
     transition: all 0.23s ease;
+    box-shadow: 2px 2px 4px rgba(60,60,120,0.5);
+    border-radius: 8px;
 }
 
 .other-button:hover {

@@ -1,7 +1,7 @@
 .plot-container {
     color: rgb(60,60,120);
     flex: 2;
-    border: 1px solid;
+    box-shadow: 3px 3px 5px rgba(60,60,120,0.5);
 }
 
 #chart {
