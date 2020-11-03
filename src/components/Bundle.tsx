@@ -200,12 +200,16 @@ class Bundle extends React.Component {
 				</div>
 				<div className='bundle-bottom'>
 					<div className='bar-container'><Bar data={this.state.barArray} /></div>
-					<div className="legend-container">
-						<Legend />
-						<div className='legend-button' id="sampleButton" onClick={() => this.getSample('all')}>Sample</div>
-						<div className='legend-button' id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
+					<div className='bundle-bottom-right'>
+						<div className='plot-container'><Plot data={this.state.runtimes} /></div>
+						<div className="legend-container">
+							<div className='legend-button-container'>
+								<div className='legend-button' id="sampleButton" onClick={() => this.getSample('all')}>Sample</div>
+								<div className='legend-button' id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
+							</div>
+							<Legend />
+						</div>
 					</div>
-					<div className='plot-container'><Plot data={this.state.runtimes} /></div>
 				</div>
 			</div>
 		);
