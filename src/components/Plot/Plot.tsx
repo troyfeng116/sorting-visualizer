@@ -12,7 +12,7 @@ const Plot = React.memo((props: {data: any[][]}) => {
 		const maxRuntime = 5000;
 		const height = 400;
 		const width = 400;
-		var svg = d3.select("body").append("svg").attr("width",width).attr("height",height).attr("id","chart");
+		var svg = d3.select(".plot-container").append("svg").attr("width",width).attr("height",height).attr("id","chart");
 		svg.selectAll("circle")
 			.data(dataset)
 			.enter()

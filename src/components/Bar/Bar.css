@@ -1,6 +1,7 @@
-#barContainer {
-    position:absolute;
-    bottom:10%;
-    left:30%;
-    transform: translate(-50%,0);
+.bar-container {
+    flex: 6;
+    min-width: 800px;
+    min-height: 500px;
+    height: 65vh;
+    max-height: 800px;
 }

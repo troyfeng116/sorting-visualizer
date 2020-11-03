@@ -1,3 +1,4 @@
+import './Bundle.css'
 import React from 'react';
 
 /* -------- ALGORITHMS -------- */
@@ -156,7 +157,7 @@ class Bundle extends React.Component {
 		const menuButtons = new Array(5);
 		for (let i = 0; i < 5; i++) {
 			menuButtons[i] = (
-				<div className='menubar-cell'>
+				<div className='menubar-cell' key={i}>
 					<div className='menubar-cell-top' id={algoStrings[i]} onClick={()=>this.applyAlgorithm(algoStrings[i])}>
 						{algoFullNames[i]}
 					</div>
@@ -166,12 +167,11 @@ class Bundle extends React.Component {
 				</div>
 			)
 		}
-		const menuBar = <div id="menuBar">{menuButtons}</div>;
 		const otherButtons = (
 			<div id="otherButtonsContainer">
-				<div id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
-				<div id='instantShuffle' onClick={()=>this.applyAlgorithm('instantShuffle')}>Instant Shuffle</div><br/>
-				<div onClick={()=>this.handleStop()}>Stop</div>
+				<div className='other-button' id='shuffle' onClick={()=>this.applyAlgorithm('shuffle')}>Shuffle</div><br/>
+				<div className='other-button' id='instantShuffle' onClick={()=>this.applyAlgorithm('instantShuffle')}>Instant Shuffle</div><br/>
+				<div className='other-button' onClick={()=>this.handleStop()}>Stop</div>
 			</div>
 		);
 		const sliderContainer = (
@@ -181,29 +181,32 @@ class Bundle extends React.Component {
 					min="5" max="128" defaultValue="50" 
 					name="barSlider" id="barSlider" 
 					onInput={() => this.handleNumBarsChange()} /><br/>
-				<label htmlFor="barSlider" id="barSliderDisplay"># BARS: 50</label><br/><br/>
+				<label htmlFor="barSlider" id="barSliderDisplay"># Bars: 50</label><br/><br/>
 				<input 
 					type="range" 
 					min="10" max="700" defaultValue="100" step="10"
 					name="speedSlider" id="speedSlider" onInput={() => this.handleSpeedChange()} /><br/>
-				<label htmlFor="speedSlider" id="speedSliderDisplay">SPEED: 0.1 s</label><br/>
+				<label htmlFor="speedSlider" id="speedSliderDisplay">
+					Speed: {this.state.speed/1000}s
+				</label><br/>
 			</div>
 		);
-		const bars = <Bar data={this.state.barArray} />;
-		const graph = <Plot data={this.state.runtimes} />;
-		const legend = <div id="legendContainer">
-			<Legend />
-			<div id="sampleButton" onClick={() => this.getSample('all')}>Sample</div>
-			<div id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
-		</div>;
 		return (
 			<div id="Bundle">
-				{menuBar}
-				{otherButtons}
-				{sliderContainer}
-				{bars}
-				{graph}
-				{legend}
+				<div className='bundle-top'>
+					<div id="menuBar">{menuButtons}</div>
+					<div className='other-buttons-super-container'>{otherButtons}</div>
+					<div className='slider-super-container'>{sliderContainer}</div>
+				</div>
+				<div className='bundle-bottom'>
+					<div className='bar-container'><Bar data={this.state.barArray} /></div>
+					<div className="legend-container">
+						<Legend />
+						<div className='legend-button' id="sampleButton" onClick={() => this.getSample('all')}>Sample</div>
+						<div className='legend-button' id="resetButton" onClick={() => this.resetRuntimes()}>Reset</div>
+					</div>
+					<div className='plot-container'><Plot data={this.state.runtimes} /></div>
+				</div>
 			</div>
 		);
 	}

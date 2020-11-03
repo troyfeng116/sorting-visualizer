@@ -1,0 +1,91 @@
+#Bundle {
+    display: flex;
+    flex-direction: column;
+    color: rgb(60,60,120);
+}
+
+.bundle-top {
+    display: flex;
+    padding: 20px;
+}
+
+#menuBar {
+    padding: 0;
+    text-align: center;
+    display: flex;
+    flex: 4;
+}
+
+.menubar-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    margin-right: 20px;
+}
+
+.menubar-cell-top {
+    border: 1px solid;
+    transition: all 0.23s ease;
+    flex: 1;
+    padding: 15px 0;
+    width: 100%;
+    font-size: 20px;
+}
+
+.menubar-cell-top:hover {
+    background-color: rgb(60,60,120);
+    color: white;
+    cursor: pointer;
+}
+
+.menubar-cell-bottom {
+    padding: 10px 20px;
+    border: 1px solid;
+    margin-top: 20px;
+    transition: all 0.23s ease;
+    font-size: 16px;
+}
+
+.menubar-cell-bottom:hover {
+    background-color: rgb(60,60,120);
+    color: white;
+    cursor: pointer;
+}
+
+#sliderContainer {
+    flex: 1;
+    border: 1px solid;
+    padding: 20px;
+}
+
+.other-buttons-super-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.other-button {
+    padding: 10px;
+    border: 1px solid;
+    max-width: 200px;
+    min-width: 150px;
+    text-align: center;
+    font-size: 20px;
+    transition: all 0.23s ease;
+}
+
+.other-button:hover {
+    background-color: rgb(60,60,120);
+    color: white;
+    cursor: pointer;
+}
+
+.bundle-bottom {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}

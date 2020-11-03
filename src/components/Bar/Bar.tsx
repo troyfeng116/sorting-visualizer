@@ -3,12 +3,12 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { getColor } from '../../utility/functions';
 
-function Bar(props: {data:any[][]}) {
-    useEffect(() => drawChart());
+const  Bar = (props: {data:any[][]}) => {
+    useEffect(() => drawChart(), [props.data]);
     function drawChart() {
     	const data = props.data;
     	d3.select("#barContainer").remove();
-    	const svg = d3.select("Body").append("svg").attr("width", "50%").attr("height", "60%").attr("id","barContainer");
+    	const svg = d3.select(".bar-container").append("svg").attr("width", "100%").attr("height", "100%").attr("id","barContainer");
     	svg.selectAll("rect")
   			.data(data)
   			.enter()
