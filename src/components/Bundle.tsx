@@ -33,7 +33,7 @@ class Bundle extends React.Component {
 	}
 	handleNumBarsChange() {
 		var n:number = parseInt((document.getElementById('barSlider') as HTMLInputElement).value);
-		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# BARS: "+n;
+		(document.getElementById("barSliderDisplay") as HTMLLabelElement).innerHTML = "# Bars: "+n;
 		this.setState({
 			numBars: n,
 			barArray: makeArray(n),
@@ -42,7 +42,7 @@ class Bundle extends React.Component {
 	}
 	handleSpeedChange() {
 		var newSpeed = parseInt((document.getElementById("speedSlider") as HTMLInputElement).value);
-		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "SPEED: "+(newSpeed/1000)+"s";
+		(document.getElementById("speedSliderDisplay") as HTMLLabelElement).innerHTML = "Speed: "+(newSpeed/1000)+"s";
 		this.setState({speed: newSpeed});
 	}
 	handleStop() {
